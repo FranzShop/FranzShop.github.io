@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0878f9">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.json">
+<title>FranzOnlineShop</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f7fb;color:#172033;min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+.screen{min-height:100vh}
+#auth{display:flex;align-items:center;justify-content:center;padding:22px;position:relative;overflow:hidden;
+background:linear-gradient(135deg,#1479ff,#55a9ff,#fff,#dcecff,#1479ff);background-size:500% 500%;
+animation:bgMove 9s ease infinite}
+@keyframes bgMove{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+.auth-card{width:100%;max-width:430px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-radius:28px;padding:30px 24px;box-shadow:0 20px 60px #0b4c9b33}
+.brand{font-size:42px;font-weight:900;letter-spacing:-2px;text-align:center;background:linear-gradient(90deg,#075bd8,#19a7ff,#075bd8);background-size:200%;color:transparent;background-clip:text;-webkit-background-clip:text;animation:brandMove 4s linear infinite}
+@keyframes brandMove{to{background-position:200% 0}}
+.tagline{text-align:center;color:#52627a;margin:8px 0 24px;line-height:1.5}
+.auth-title{font-size:24px;margin-bottom:15px;text-align:center}
+.field{margin:11px 0}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:#4a5870}
+.field input,.select{width:100%;padding:14px;border:1px solid #dbe3ef;border-radius:13px;outline:none;background:#fff}
+.field input:focus{border-color:#1683ff;box-shadow:0 0 0 3px #1683ff18}
+.primary{width:100%;padding:14px;border-radius:13px;background:#126fe8;color:white;font-weight:800;margin-top:8px;transition:.25s}
+.primary:hover{transform:translateY(-1px)}
+.switch{text-align:center;margin-top:17px;font-size:14px;color:#59677b}
+.link{color:#086fe8;font-weight:800;cursor:pointer}
+.error{color:#e33;font-size:13px;text-align:center;margin-top:8px}
+.welcome{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;
+background:linear-gradient(135deg,#fff,#cfe7ff,#197cff,#fff);background-size:400%;animation:bgMove 7s infinite}
+.welcome-box{text-align:center;background:#ffffffef;padding:42px 25px;border-radius:28px;max-width:430px;box-shadow:0 20px 60px #075bd844}
+.welcome-box h1{font-size:30px;color:#075bd8;margin-bottom:10px}
+.welcome-box p{color:#52627a;line-height:1.5;margin-bottom:25px}
+.pulse{animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px #167cff12}}
+#app{padding-bottom:78px}
+.topbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #e8edf4;padding:13px 16px}
+.topbar-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo-small{font-size:23px;font-weight:900;color:#086de0}
+.search{flex:1;max-width:260px;background:#f1f5fa;border-radius:22px;padding:10px 14px;border:0;outline:0}
+.page{display:none;padding:14px}.page.active{display:block}
+.banner{height:165px;border-radius:20px;padding:23px;color:#fff;display:flex;align-items:center;overflow:hidden;
+background:linear-gradient(120deg,#0768e8,#17b1ff,#075bd8);background-size:250%;animation:bannerMove 5s infinite alternate;position:relative}
+@keyframes bannerMove{to{background-position:100% 0}}
+.banner h2{font-size:27px;max-width:70%;line-height:1.05}.banner p{margin-top:9px;opacity:.9;font-size:13px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 11px;font-size:18px;font-weight:900}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product{background:#fff;border-radius:17px;overflow:hidden;box-shadow:0 4px 16px #1720330c;position:relative}
+.product img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#eaf2ff}
+.product-body{padding:10px}
+.product-name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rating-row{font-size:11px;color:#718096;margin-top:5px}.rating-row .star{color:#f5a623}.no-reviews{color:#7b8798}.review-btn{background:#086fe5;color:#fff;border-radius:9px;padding:9px 12px;font-weight:800;width:100%;margin-top:9px}.received-btn{background:#eaf4ff;color:#086fe5;border:1px solid #b9ddff;border-radius:9px;padding:9px 12px;font-weight:800;width:100%;margin-top:9px}
+.price{font-weight:900;color:#096ddd;margin-top:6px}
+.qty-row{display:flex;align-items:center;justify-content:space-between;margin-top:9px}
+.qty{display:flex;align-items:center;border:1px solid #dce4ef;border-radius:9px;overflow:hidden}
+.qty button{width:28px;height:28px;background:#f5f8fc;font-weight:900}.qty span{width:25px;text-align:center;font-size:13px}
+.small-actions{display:flex;gap:6px;margin-top:8px}.small-actions button{flex:1;padding:8px;border-radius:8px;font-size:11px;font-weight:800}
+.buy{background:#086fe5;color:#fff}.add{background:#eaf3ff;color:#086fe5}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:#fff;border-top:1px solid #e4e9f1;display:flex;z-index:30;box-shadow:0 -5px 20px #1720330a}
+.nav-item{flex:1;background:none;color:#78859a;font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.nav-icon{font-size:21px;line-height:1;color:#66758c}.nav-item.active{color:#086fe5}.nav-item.active .nav-icon{color:#086fe5}
+.card{background:#fff;border-radius:17px;padding:15px;margin-bottom:12px;box-shadow:0 4px 16px #1720330a}
+.empty{text-align:center;padding:50px 15px;color:#8a96a8}
+.cart-item{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid #edf0f5}
+.cart-item:last-child{border:0}.cart-item img{width:74px;height:74px;object-fit:cover;border-radius:11px}
+.cart-info{flex:1}.cart-info h4{font-size:14px}.cart-info .price{font-size:14px}
+.total-line{display:flex;justify-content:space-between;font-weight:900;padding:15px 0}
+.checkout-btn{width:100%;padding:14px;background:#086fe5;color:#fff;border-radius:12px;font-weight:900}
+.modal{position:fixed;inset:0;background:#0007;z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.modal-box{width:100%;max-width:520px;max-height:92vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;padding:18px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.close{background:#eef2f7;width:34px;height:34px;border-radius:50%;font-size:18px}
+.detail-img{width:100%;max-height:330px;object-fit:cover;border-radius:17px}
+.detail-title{font-size:22px;font-weight:900;margin:14px 0 5px}.detail-desc{color:#647186;line-height:1.5;font-size:14px}
+.option-label{font-weight:800;font-size:13px;margin:16px 0 8px}
+.options{display:flex;flex-wrap:wrap;gap:8px}.option{padding:9px 13px;border:1px solid #d8e0eb;background:#fff;border-radius:9px}.option.selected{border-color:#086fe5;background:#eaf3ff;color:#086fe5}
+.profile-head{display:flex;align-items:center;gap:14px;padding:10px 2px 18px}
+.avatar{width:68px;height:68px;border-radius:50%;object-fit:cover;border:3px solid #e5f0ff}
+.profile-name{font-size:20px;font-weight:900}.profile-sub{font-size:13px;color:#758196;margin-top:4px}
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;text-align:center}
+.status{padding:10px 3px;border-radius:11px;background:#f5f8fc;font-size:11px;color:#58667a}.status strong{display:block;font-size:20px;color:#086fe5;margin-bottom:3px}
+.menu-row{display:flex;align-items:center;justify-content:space-between;padding:15px 3px;border-bottom:1px solid #edf0f5}.menu-row:last-child{border:0}
+.notice{padding:14px;border-radius:13px;background:#eef6ff;margin-bottom:9px}.notice b{display:block;margin-bottom:4px}.notice span{font-size:12px;color:#647186}
+.avatar-picker{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.avatar-choice{width:52px;height:52px;border-radius:50%;object-fit:cover;border:3px solid transparent;cursor:pointer}.avatar-choice.selected{border-color:#086fe5}.stars{display:flex;gap:7px;margin:10px 0}.star-btn{font-size:28px;background:#eef6ff;border-radius:10px;width:46px;height:46px;color:#9aa7b8}.star-btn.active{color:#f5a623;background:#fff4dc}
+@media(min-width:600px){.products{grid-template-columns:repeat(3,1fr)}.modal{align-items:center}.modal-box{border-radius:24px}}
+
+/* FranzOnlineShop Buy Now address experience */
+.address-flow-card,.address-form-shell,.location-picker-shell{
+  position:relative;overflow:hidden;background:linear-gradient(120deg,#fff 0%,#bfe1ff 28%,#0878f9 52%,#fff 76%,#0878f9 100%);
+  background-size:400% 400%;animation:addressGradient 8s ease-in-out infinite;border-radius:26px;
+}
+@keyframes addressGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.address-flow-card>*:not(.bubble-layer),.address-form-shell>*:not(.bubble-layer),.location-picker-shell>*:not(.bubble-layer){position:relative;z-index:2}
+.bubble-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.address-bubble{position:absolute;bottom:-55px;border-radius:50%;border:1px solid rgba(255,255,255,.72);
+background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.9),rgba(255,255,255,.2) 38%,rgba(255,255,255,.06) 70%,transparent 72%);
+box-shadow:inset 0 0 10px rgba(255,255,255,.28),0 2px 10px rgba(20,110,220,.12);opacity:.75;animation:bubbleRise linear forwards}
+@keyframes bubbleRise{0%{transform:translate3d(0,0,0) scale(.7);opacity:0}12%{opacity:.78}72%{opacity:.72}92%{transform:translate3d(var(--drift),-72vh,0) scale(1.05);opacity:.5}100%{transform:translate3d(var(--drift2),-86vh,0) scale(.05);opacity:0}}
+.address-flow-inner{padding:22px 18px}
+.address-flow-title{font-size:23px;font-weight:900;color:#075bd8;text-align:center;text-shadow:0 1px 1px #fff;margin:5px 0 8px}
+.address-flow-sub{text-align:center;color:#274d78;font-size:12px;line-height:1.5;margin-bottom:16px}
+.address-main-btn{width:100%;padding:18px 14px;border-radius:20px;background:rgba(255,255,255,.82);color:#075bd8;font-weight:900;font-size:18px;box-shadow:0 10px 28px rgba(7,91,216,.16);border:1px solid rgba(255,255,255,.85)}
+.address-main-btn:active{transform:scale(.985)}
+.saved-address-card{background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.95);border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 7px 20px rgba(7,91,216,.12)}
+.saved-address-card b{color:#075bd8}.saved-address-card .addr-line{font-size:12px;color:#3e5874;line-height:1.55;margin-top:5px}
+.address-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.address-secondary{padding:12px;border-radius:13px;background:#fff;color:#075bd8;font-weight:800;border:1px solid #d9eaff}
+.address-continue{padding:12px;border-radius:13px;background:#086fe5;color:#fff;font-weight:900}
+.address-form-shell{padding:18px}
+.address-form-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.address-form-head b{font-size:20px;color:#075bd8}
+.address-form-close{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.82);color:#075bd8;font-size:18px}
+.address-form-shell .field{margin:9px 0}
+.address-form-shell .field label{color:#20486f}
+.address-form-shell .field input,.address-select-btn{background:rgba(255,255,255,.92);border:1px solid rgba(145,190,235,.75);border-radius:14px;padding:13px}
+.address-select-btn{width:100%;text-align:left;color:#52677f;min-height:48px}
+.address-select-btn.has-value{color:#172033;font-weight:700}
+.address-save-btn{width:100%;margin-top:10px;padding:15px;border-radius:15px;background:#086fe5;color:#fff;font-weight:900;box-shadow:0 8px 20px rgba(8,111,229,.2)}
+.address-note{font-size:11px;color:#365b7e;line-height:1.45;margin:9px 2px}
+.location-picker-shell{padding:16px}
+.location-picker-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.location-picker-head b{color:#075bd8;font-size:18px}
+.location-search{width:100%;padding:13px 14px;border:1px solid #cfe4f8;border-radius:14px;background:rgba(255,255,255,.94);outline:none;margin-bottom:10px}
+.location-list{max-height:55vh;overflow:auto;padding-right:2px}
+.location-option{display:block;width:100%;text-align:left;padding:13px 12px;border:1px solid rgba(205,224,243,.75);border-radius:13px;background:rgba(255,255,255,.9);margin-bottom:7px;color:#172033;font-weight:700}
+.location-option small{display:block;color:#728399;font-weight:500;margin-top:2px}
+.location-empty{padding:20px;text-align:center;color:#58708a;background:rgba(255,255,255,.72);border-radius:14px}
+.checkout-address-card{background:#eef7ff;border:1px solid #cfe7ff;border-radius:15px;padding:13px;margin-bottom:10px}
+.checkout-address-card b{color:#075bd8}.checkout-address-card div{font-size:12px;color:#4d6077;line-height:1.5;margin-top:4px}
+
+</style>
+
+<style id="franz-blue-white-theme">
+:root{
+  --franz-blue:#0878f9;
+  --franz-blue2:#00a8ff;
+  --franz-light:#eef7ff;
+  --franz-white:#ffffff;
+  --franz-ink:#12304a;
+}
+
+/* Blue ↔ white animated backgrounds */
+body{
+  background:linear-gradient(120deg,#ffffff,#dff1ff,#0878f9,#ffffff,#dff1ff);
+  background-size:500% 500%;
+  animation:franzBlueWhite 12s ease infinite;
+}
+#auth{
+  background:linear-gradient(120deg,#ffffff,#eaf6ff,#0878f9,#ffffff,#d9efff);
+  background-size:500% 500%;
+  animation:franzBlueWhite 10s ease infinite;
+}
+#welcome{
+  background:linear-gradient(120deg,#0878f9,#ffffff,#bfe7ff,#0878f9,#ffffff);
+  background-size:500% 500%;
+  animation:franzBlueWhite 9s ease infinite;
+}
+
+@keyframes franzBlueWhite{
+  0%{background-position:0% 50%}
+  25%{background-position:100% 50%}
+  50%{background-position:100% 100%}
+  75%{background-position:0% 100%}
+  100%{background-position:0% 50%}
+}
+
+/* Replace warm-looking accents with cool blue/white */
+button,.primary,.buy,.checkout-btn{
+  background:linear-gradient(90deg,var(--franz-blue),var(--franz-blue2),#fff,var(--franz-blue));
+  background-size:300% 100%;
+  animation:franzButton 4s ease-in-out infinite;
+  color:#fff;
+  border:1px solid rgba(8,120,249,.25);
+  box-shadow:0 8px 24px rgba(8,120,249,.18);
+}
+@keyframes franzButton{
+  0%,100%{background-position:0% 50%;color:#fff}
+  50%{background-position:100% 50%;color:#0878f9}
+}
+.add{
+  background:linear-gradient(120deg,#fff,#e8f5ff,#0878f9,#fff);
+  background-size:300% 300%;
+  animation:franzSoft 5s ease infinite;
+  color:#0878f9;
+  border-color:#b9ddff;
+}
+@keyframes franzSoft{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+/* Logo and banner glow */
+.brand,.logo-small{
+  background:linear-gradient(90deg,#0878f9,#00a8ff,#fff,#0878f9);
+  background-size:300% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:franzText 4s linear infinite;
+}
+@keyframes franzText{
+  from{background-position:0% 50%}
+  to{background-position:300% 50%}
+}
+
+.banner{
+  background:linear-gradient(120deg,#0878f9,#00a8ff,#fff,#0878f9);
+  background-size:400% 400%;
+  animation:franzBlueWhite 8s ease infinite;
+  box-shadow:0 12px 35px rgba(8,120,249,.22);
+}
+
+.nav button{
+  background:transparent;
+  box-shadow:none;
+  border:0;
+  color:#4f6b83;
+  animation:none;
+}
+.nav button.active{
+  color:#0878f9;
+  background:linear-gradient(90deg,#e9f5ff,#fff);
+  border-radius:14px;
+}
+
+.card,.product,.modal-card,.checkout,.profile-card{
+  border-color:#d7ebff;
+  box-shadow:0 12px 32px rgba(8,120,249,.10);
+}
+
+input,select{
+  border-color:#c8e3fb;
+}
+input:focus,select:focus{
+  border-color:#0878f9;
+  box-shadow:0 0 0 4px rgba(8,120,249,.10);
+  outline:none;
+}
+
+/* Subtle animated highlights */
+.card::before,.product::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  z-index:-1;
+  border-radius:inherit;
+  background:linear-gradient(90deg,transparent,#0878f9,#fff,#0878f9,transparent);
+  background-size:300% 100%;
+  opacity:.12;
+  animation:franzBorder 5s linear infinite;
+}
+.card,.product{position:relative}
+@keyframes franzBorder{
+  from{background-position:0% 50%}
+  to{background-position:300% 50%}
+}
+
+/* Keep text readable */
+body,#app,.section,.modal-card{color:var(--franz-ink)}
+</style>
+
+
+<style id="franz-me-layout">
+.me-hero{
+  margin:-8px -10px 14px;
+  padding:24px 18px 16px;
+  color:#fff;
+  background:linear-gradient(135deg,#086fe5,#4aa3ff,#fff,#086fe5);
+  background-size:320% 320%;
+  animation:franzBlueWhite 9s ease infinite;
+  border-radius:0 0 26px 26px;
+  box-shadow:0 12px 30px rgba(8,111,229,.22);
+}
+.me-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.me-profile{align-items:center}
+.me-profile .avatar{width:76px;height:76px;border:4px solid rgba(255,255,255,.9)}
+.me-user-info{position:relative}
+.me-user-info .profile-name{font-size:23px;font-weight:800;color:#fff}
+.me-user-info .profile-sub{color:rgba(255,255,255,.9)}
+.loyalty-pill{display:inline-block;margin-top:6px;padding:5px 10px;border-radius:20px;background:#fff;color:#086fe5;font-size:12px;font-weight:800}
+.me-actions{display:flex;gap:8px}
+.me-actions button{width:38px;height:38px;border:1px solid rgba(255,255,255,.55);border-radius:50%;background:rgba(255,255,255,.18);box-shadow:none;color:#fff;font-size:18px;position:relative;animation:none}
+.me-actions .badge-action span{position:absolute;top:-5px;right:-4px;min-width:17px;height:17px;padding:1px 4px;border-radius:10px;background:#fff;color:#086fe5;font-size:10px;font-weight:800}
+.member-line{font-size:12px;margin:8px 0 14px 94px;color:rgba(255,255,255,.9)}
+.vip-strip{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.94);color:#16314d;border-radius:16px;padding:11px 13px;cursor:pointer}
+.vip-strip b{display:block;font-size:14px}
+.vip-strip small{display:block;color:#66778b;margin-top:3px}
+.vip-strip>span{margin-left:auto;color:#086fe5;font-size:25px}
+.vip-icon{width:46px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff,#d8edff,#086fe5);color:#086fe5;font-weight:900}
+
+.setup-card{display:flex;align-items:center;gap:10px;padding:16px}
+.setup-icon{font-size:26px;color:#086fe5}
+.setup-card b{margin-left:auto;color:#086fe5;cursor:pointer}
+.setup-close{font-size:25px;color:#91a0af}
+.me-title{margin:0 0 16px}
+.me-title>span:last-child{color:#086fe5;font-size:13px;cursor:pointer}
+.purchase-grid,.explore-grid,.wallet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.purchase-item,.explore-grid>div,.wallet-grid>div{text-align:center}
+.purchase-icon,.wallet-icon,.round-icon{
+  width:48px;height:48px;border-radius:50%;margin:0 auto 7px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#fff,#dff1ff,#086fe5);
+  color:#086fe5;font-weight:900;font-size:21px;
+}
+.purchase-item b{display:block;font-size:12px;color:#086fe5}
+.purchase-item span,.explore-grid b,.wallet-grid b{display:block;font-size:12px}
+.travel-row{display:flex;align-items:center;gap:10px;border-top:1px solid #e3edf7;margin-top:17px;padding-top:15px}
+.travel-icon{color:#086fe5;font-size:24px}
+.travel-deal{margin-left:auto;color:#086fe5;font-size:12px}
+.explore-card h3,.wallet-card h3{margin:0 0 16px}
+.round-icon{border-radius:50%;font-size:14px}
+.explore-grid small,.wallet-grid small{display:block;color:#086fe5;font-size:11px;margin-top:5px}
+.wallet-grid button{margin-top:6px;padding:5px 13px;border-radius:7px;background:#fff;color:#086fe5;border:1px solid #086fe5;box-shadow:none;animation:none}
+.financial-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.finance-item{display:flex;align-items:center;gap:9px;border:1px solid #d9e8f7;border-radius:13px;padding:12px;background:#fff}
+.finance-item:nth-child(3){grid-column:1/2}
+.finance-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#dff1ff,#086fe5);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
+.finance-item div{flex:1}
+.finance-item b{display:block;font-size:13px}
+.finance-item small{display:block;color:#086fe5;font-size:11px;margin-top:3px}
+.finance-item>span:last-child{color:#086fe5;font-size:22px}
+.profile-pick-card p{font-size:12px;color:#778399;margin-top:0}
+@media(max-width:480px){
+  .me-actions button{width:34px;height:34px;font-size:16px}
+  .me-profile .avatar{width:68px;height:68px}
+  .me-user-info .profile-name{font-size:20px}
+  .member-line{margin-left:82px}
+  .financial-grid{grid-template-columns:1fr}
+  .finance-item:nth-child(3){grid-column:auto}
+}
+</style>
+
+
+<style id="franz-v3-ui">
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{overscroll-behavior-y:none;-webkit-overflow-scrolling:touch}
+.page,.modal-box,.location-list{scroll-behavior:smooth;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.modal{overscroll-behavior:contain}
+button,input,select,textarea{touch-action:manipulation}
+
+/* Reusable Franz blue/white glass dialog */
+.franz-theme-shell{position:relative;overflow:hidden;border-radius:30px;background:linear-gradient(120deg,#fff 0%,#dff1ff 23%,#0878f9 48%,#fff 73%,#0878f9 100%);background-size:450% 450%;animation:franzBlueWhite 9s ease infinite;box-shadow:0 22px 65px rgba(0,65,150,.30)}
+.franz-theme-shell>*:not(.bubble-layer){position:relative;z-index:2}
+.franz-theme-inner{padding:25px 20px 20px;text-align:center}
+.franz-theme-title{font-size:22px;font-weight:900;color:#075bd8;text-shadow:0 1px 1px #fff;line-height:1.2;margin-bottom:9px}
+.franz-theme-message{font-size:14px;font-weight:700;color:#183d63;line-height:1.55;white-space:pre-line}
+.franz-theme-btn{width:100%;margin-top:17px;padding:14px 16px;border-radius:18px;background:linear-gradient(90deg,#0878f9,#fff,#0878f9);background-size:300% 100%;animation:franzButton 4s ease-in-out infinite;color:#0878f9;font-family:Georgia,serif;font-weight:900;letter-spacing:.6px;border:1px solid rgba(255,255,255,.85);box-shadow:0 10px 25px rgba(8,120,249,.20)}
+.franz-theme-btn:active{transform:scale(.985)}
+.franz-theme-close{position:absolute;right:13px;top:13px;z-index:4;width:35px;height:35px;border-radius:50%;background:rgba(255,255,255,.82);color:#075bd8;font-size:20px}
+
+/* Checkout */
+.checkout-v3{margin:-2px -2px 0}
+.checkout-head-v3{display:flex;align-items:center;gap:10px;padding:2px 0 12px}
+.checkout-head-v3 h2{font-size:22px;font-weight:500}
+.checkout-back{width:35px;height:35px;border-radius:50%;background:#fff;color:#0878f9;font-size:24px;box-shadow:0 3px 12px rgba(8,120,249,.12)}
+.checkout-section{background:#fff;border-radius:18px;padding:14px;margin-bottom:10px;box-shadow:0 7px 22px rgba(18,48,74,.07);border:1px solid #eaf3fb}
+.checkout-address-v3{display:flex;gap:11px;align-items:flex-start}
+.checkout-pin{font-size:23px;color:#0878f9;line-height:1}
+.checkout-address-v3 b{font-size:14px}.checkout-address-v3 .muted{font-size:12px;color:#66758a;line-height:1.5;margin-top:3px}
+.checkout-address-edit{margin-left:auto;color:#0878f9;font-weight:800;background:none;font-size:12px}
+.platform-voucher-title{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:800}
+.platform-voucher-badge{color:#0878f9;border:1px solid #0878f9;border-radius:10px;padding:5px 8px;font-size:11px;font-weight:800}
+.vip-voucher-banner{margin-top:11px;border-radius:15px;overflow:hidden;background:linear-gradient(100deg,#0878f9,#fff,#00a8ff,#0878f9);background-size:300% 100%;animation:franzButton 6s ease-in-out infinite;padding:11px 8px;color:#fff;display:grid;grid-template-columns:1.05fr 1fr 1fr 1fr 1fr;gap:6px;align-items:center;text-align:center;font-weight:900;box-shadow:0 9px 20px rgba(8,120,249,.17)}
+.vip-voucher-banner span{background:rgba(255,255,255,.82);color:#0878f9;border-radius:9px;padding:7px 3px;font-size:9px;line-height:1.15;min-height:42px;display:flex;align-items:center;justify-content:center}
+.vip-voucher-banner span:first-child{font-size:18px;background:rgba(255,255,255,.94)}
+.payment-title{display:flex;justify-content:space-between;align-items:center;font-size:17px;font-weight:900;margin-bottom:5px}
+.payment-method{display:flex;align-items:center;gap:11px;width:100%;padding:12px 2px;border-top:1px solid #edf2f7;background:none;text-align:left;color:#172033}
+.payment-method:first-of-type{border-top:0}.payment-method .pm-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff,#dff1ff,#0878f9);color:#0878f9;font-weight:900;font-size:14px;flex:none}
+.payment-method .pm-main{flex:1}.payment-method .pm-main b{display:block;font-size:14px}.payment-method .pm-main small{display:block;color:#7a8799;font-size:11px;margin-top:2px}.payment-method .pm-check{width:23px;height:23px;border-radius:50%;border:2px solid #d2dbe6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}.payment-method.selected .pm-check{border-color:#0878f9;background:#0878f9}
+.payment-method.selected .pm-main b{color:#0878f9}
+.payment-details{border-top:1px solid #edf2f7;margin-top:4px;padding-top:12px}
+.payment-detail-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;color:#647186}.payment-detail-row strong{color:#172033}
+.checkout-total-card{background:#fff;border-radius:18px;padding:14px;margin-bottom:85px;border:1px solid #eaf3fb;box-shadow:0 7px 22px rgba(18,48,74,.07)}
+.checkout-total-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;color:#66758a}.checkout-total-row.total{font-size:18px;font-weight:900;color:#172033;border-top:1px solid #edf2f7;margin-top:7px;padding-top:12px}.checkout-total-row.total strong{color:#0878f9}
+.checkout-footer-v3{position:sticky;bottom:-18px;margin:0 -18px -18px;padding:12px 12px 10px;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-top:1px solid #e8eef6;display:flex;align-items:center;gap:12px;z-index:10}
+.checkout-footer-total{margin-left:auto;text-align:right}.checkout-footer-total small{display:block;color:#6c7889}.checkout-footer-total strong{display:block;color:#0878f9;font-size:20px}.place-order-v3{padding:14px 19px;border-radius:15px;background:linear-gradient(90deg,#0878f9,#00a8ff,#0878f9);background-size:250%;animation:franzButton 4s ease-in-out infinite;color:#fff;font-family:Georgia,serif;font-weight:900;font-size:15px;box-shadow:0 8px 20px rgba(8,120,249,.22)}
+
+/* GCash form */
+.gcash-card{position:relative;overflow:hidden;border-radius:30px;background:linear-gradient(120deg,#fff,#dff1ff,#0878f9,#fff,#0878f9);background-size:450% 450%;animation:franzBlueWhite 9s ease infinite;box-shadow:0 22px 65px rgba(0,65,150,.30)}
+.gcash-card>*:not(.bubble-layer){position:relative;z-index:2}
+.gcash-inner{padding:24px 18px 18px}.gcash-title{font-family:Georgia,serif;font-size:21px;font-weight:900;color:#075bd8;text-align:center;margin-bottom:10px}.gcash-number{background:rgba(255,255,255,.86);border-radius:16px;padding:12px;text-align:center;color:#075bd8;font-weight:900;margin-bottom:12px}.gcash-field label{display:block;font-family:Georgia,serif;font-weight:900;font-size:12px;color:#173d63;margin:9px 0 5px}.gcash-field input{width:100%;padding:13px;border-radius:14px;border:1px solid #c7e1fa;background:rgba(255,255,255,.94);outline:none}.gcash-file{width:100%;padding:12px;border-radius:14px;background:rgba(255,255,255,.94);border:1px dashed #0878f9;color:#075bd8}.gcash-receipt-preview{max-width:100%;max-height:150px;display:block;margin:9px auto 0;border-radius:13px;object-fit:contain;background:#fff}
+
+/* Order cards/status */
+.order-address-mini{font-size:11px;color:#68778b;line-height:1.45;margin-top:6px}.order-status-pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#eaf5ff;color:#0878f9;font-size:11px;font-weight:900;margin-top:8px}.order-action{width:100%;padding:11px 13px;border-radius:12px;margin-top:9px;background:linear-gradient(90deg,#0878f9,#00a8ff,#0878f9);background-size:250%;animation:franzButton 4s ease-in-out infinite;color:#fff;font-weight:900}.order-muted{font-size:11px;color:#758398;margin-top:6px;line-height:1.45}
+
+/* Order status navigation + detailed order view */
+.purchase-grid{grid-template-columns:repeat(5,minmax(0,1fr));overflow-x:auto;padding-bottom:2px}
+.purchase-item{border:0;background:transparent;padding:7px 2px;min-width:0;border-radius:13px;transition:transform .18s ease,background .18s ease;animation:none;color:#172033}
+.purchase-item:active{transform:scale(.96);background:#eef7ff}
+.purchase-item span{white-space:nowrap;font-size:10px;color:#53657a}
+.order-status-modal-box,.order-detail-modal-box{background:linear-gradient(120deg,#fff,#edf8ff,#fff);border-radius:24px;padding:16px}
+.order-filter-note{font-size:12px;color:#718096;line-height:1.45;margin:0 2px 10px}
+.order-open-card{background:rgba(255,255,255,.95);border:1px solid #dcecfb;border-radius:17px;padding:12px;margin-bottom:9px;box-shadow:0 5px 18px rgba(8,120,249,.08);cursor:pointer}
+.order-open-card:active{transform:scale(.99)}
+.order-open-top{display:flex;gap:10px;align-items:center}
+.order-open-top img{width:68px;height:68px;border-radius:12px;object-fit:cover;background:#eef7ff;flex:none}
+.order-open-info{min-width:0;flex:1}.order-open-info b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.order-open-info small{display:block;color:#718096;font-size:11px;margin-top:4px}
+.order-detail-item{display:flex;gap:12px;background:#fff;border:1px solid #e0edf9;border-radius:16px;padding:12px;margin-bottom:10px}
+.order-detail-item img{width:92px;height:92px;border-radius:14px;object-fit:cover;background:#eef7ff;flex:none}
+.order-detail-item-main{flex:1;min-width:0}.order-detail-item-main h4{font-size:14px;margin-bottom:5px}.order-detail-desc{font-size:11px;color:#718096;line-height:1.45}.order-detail-meta{font-size:12px;color:#43566d;margin-top:7px}.order-detail-price{color:#0878f9;font-weight:900;margin-top:7px}
+.order-detail-summary{background:#fff;border:1px solid #dcecfb;border-radius:16px;padding:13px;margin-top:10px}.order-detail-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;color:#607189}.order-detail-row strong{color:#172033}.order-detail-row.total{border-top:1px solid #edf2f7;margin-top:5px;padding-top:11px;font-size:17px;font-weight:900}.order-detail-row.total strong{color:#0878f9}
+.order-detail-address{background:linear-gradient(120deg,#fff,#e9f6ff,#fff);border-radius:16px;padding:12px;margin-bottom:10px;border:1px solid #cfe7fb}.order-detail-address b{display:block;color:#075bd8;font-size:14px}.order-detail-address div{font-size:12px;color:#53657a;line-height:1.5;margin-top:4px}
+.order-status-action-row{display:flex;gap:8px;margin-top:10px}.order-status-action-row button{flex:1}
+
+/* 1-second Franz loading transition for button taps */
+.franz-loading-overlay{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,35,90,.28);backdrop-filter:blur(3px);pointer-events:auto}
+.franz-loading-shell{position:relative;overflow:hidden;width:min(330px,90vw);border-radius:28px;background:linear-gradient(120deg,#fff,#dff2ff,#0878f9,#fff,#0878f9);background-size:450% 450%;animation:franzBlueWhite 5s ease infinite;box-shadow:0 24px 70px rgba(0,65,150,.3)}
+.franz-loading-shell>*:not(.bubble-layer){position:relative;z-index:2}.franz-loading-inner{text-align:center;padding:30px 22px}.franz-loading-dots{display:flex;justify-content:center;gap:3px;font-size:31px;font-weight:900;color:#0878f9;line-height:1;margin-bottom:10px}.franz-loading-dots span{display:inline-block;animation:franzDotMove .75s ease-in-out infinite}.franz-loading-dots span:nth-child(2){animation-delay:.08s}.franz-loading-dots span:nth-child(3){animation-delay:.16s}.franz-loading-dots span:nth-child(4){animation-delay:.24s}.franz-loading-dots span:nth-child(5){animation-delay:.32s}
+@keyframes franzDotMove{0%,100%{transform:translateY(0) scale(.85);opacity:.55}50%{transform:translateY(-8px) scale(1.12);opacity:1}}
+.franz-loading-text{font-family:Georgia,serif;font-weight:900;color:#075bd8;font-size:13px;letter-spacing:.6px}
+@media(max-width:480px){.purchase-grid{gap:2px}.purchase-item span{font-size:9px}.purchase-icon,.wallet-icon,.round-icon{width:43px;height:43px}}
+
+/* Better modal scrolling on Android WebView */
+.modal-box{max-height:94vh;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+@media(max-width:480px){.vip-voucher-banner{grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px}.vip-voucher-banner span{font-size:7px;padding:5px 2px}.vip-voucher-banner span:first-child{font-size:14px}.checkout-footer-v3{padding-bottom:12px}.checkout-footer-total strong{font-size:18px}}
+</style>
+
+</head>
+<body>
+
+<section id="auth" class="screen">
+  <div class="auth-card">
+    <div class="brand">FranzOnlineShop</div>
+    <p class="tagline">Hello, I'm Franz. This site is made to make ordering simple, easy, and convenient. Choose what you want and shop with us anytime.</p>
+    <div id="loginBox">
+      <h2 class="auth-title">Welcome Back</h2>
+      <div class="field"><label>Username</label><input id="loginUser" type="text" placeholder="Enter username"></div>
+      <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="Enter password"></div>
+      <button class="primary" onclick="login()">Log in</button>
+      <p class="switch">Don't have account yet? <span class="link" onclick="showSignup()">Create New account</span></p>
+      <p id="loginError" class="error"></p>
+    </div>
+    <div id="signupBox" class="hidden">
+      <h2 class="auth-title">Create Account</h2>
+      <div class="field"><label>Username</label><input id="signUser" type="text" placeholder="Choose a username"></div>
+      <div class="field"><label>Number</label><input id="signNumber" type="tel" placeholder="09XXXXXXXXX"></div>
+      <div class="field"><label>Email</label><input id="signEmail" type="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input id="signPass" type="password" placeholder="Create a password"></div>
+      <button class="primary" onclick="signup()">Sign up</button>
+      <p class="switch">Already have an account? <span class="link" onclick="showLogin()">Log in</span></p>
+      <p id="signError" class="error"></p>
+    </div>
+  </div>
+</section>
+
+<section id="welcome" class="welcome hidden">
+  <div class="welcome-box">
+    <h1>YOU CAN NOW SHOPPING WITH US!</h1>
+    <p>Your account is ready. Discover products, add your favorites to cart, and place your order with FranzOnlineShop.</p>
+    <button class="primary pulse" onclick="enterShop()">Continue</button>
+  </div>
+</section>
+
+<section id="app" class="hidden">
+  <header class="topbar">
+    <div class="topbar-row">
+      <div class="logo-small">FranzOnlineShop</div>
+      <input class="search" id="search" type="search" autocomplete="off" placeholder="Search products..." oninput="handleProductSearch(this.value)">
+    </div>
+  </header>
+
+  <main>
+    <section id="homePage" class="page active">
+      <div class="banner"><div><h2>Shop what you love.</h2><p>Great products. Easy ordering. Fast and simple shopping.</p></div></div>
+      <div class="section-title"><span>Products</span><span style="font-size:12px;color:#8793a5;font-weight:600">Choose your item</span></div>
+      <div id="products" class="products"></div>
+    </section>
+
+    <section id="cartPage" class="page">
+      <div class="section-title"><span>My Cart</span></div>
+      <div class="card" id="cartList"></div>
+      <div class="card" id="cartSummary"></div>
+    </section>
+
+    <section id="notificationPage" class="page">
+      <div class="section-title"><span>Notifications</span></div>
+      <div id="notifications"></div>
+    </section>
+
+    <section id="mePage" class="page">
+  <div class="me-hero">
+    <div class="me-hero-top">
+      <div class="profile-head me-profile">
+        <img id="profileAvatar" class="avatar" src="" alt="Profile">
+        <div class="me-user-info">
+          <div class="profile-name" id="profileName">User</div>
+          <div class="profile-sub">Welcome to FranzOnlineShop</div>
+          <div class="loyalty-pill">☆ Loyalty ›</div>
+        </div>
+      </div>
+      <div class="me-actions">
+        <button onclick="alert('Settings')">⚙</button>
+        <button class="badge-action" onclick="navigate('cart',document.querySelectorAll('.nav-item')[1])">
+          🛒<span id="meCartBadge">0</span>
+        </button>
+        <button class="badge-action" onclick="alert('No messages yet.')">
+          💬<span id="meMessageBadge">0</span>
+        </button>
+      </div>
+    </div>
+    <div class="member-line">Member since today</div>
+    <div class="vip-strip" onclick="alert('VIP benefits')">
+      <div class="vip-icon">VIP</div>
+      <div><b>Get Extra 20% Off Every Day</b><small>Exclusive vouchers and benefits just for you!</small></div>
+      <span>›</span>
+    </div>
+  </div>
+
+  <div class="card setup-card">
+    <span class="setup-icon">□</span>
+    <span>Please set up your Name, Gender, Birthday.</span>
+    <b onclick="alert('Profile setup')">Set Now</b>
+    <span class="setup-close">×</span>
+  </div>
+
+  <div class="card purchase-card">
+    <div class="section-title me-title"><span>My Purchases</span><span onclick="alert('Purchase History')">View Purchase History ›</span></div>
+    <div class="purchase-grid">
+      <button class="purchase-item" type="button" onclick="openOrderStatus('To Pay')"><div class="purchase-icon">▣</div><b id="payCount">0</b><span>To Pay</span></button>
+      <button class="purchase-item" type="button" onclick="openOrderStatus('To Ship')"><div class="purchase-icon">▤</div><b id="shipCount">0</b><span>To Ship</span></button>
+      <button class="purchase-item" type="button" onclick="openOrderStatus('To Receive')"><div class="purchase-icon">▰</div><b id="receiveCount">0</b><span>To Receive</span></button>
+      <button class="purchase-item" type="button" onclick="openOrderStatus('To Review')"><div class="purchase-icon">☆</div><b id="reviewCount">0</b><span>To Review</span></button>
+      <button class="purchase-item" type="button" onclick="openOrderStatus('To Rate')"><div class="purchase-icon">★</div><b id="rateCount">0</b><span>To Rate</span></button>
+    </div>
+    <div class="travel-row">
+      <span class="travel-icon">▥</span><b>Load, Bills & Travel</b>
+      <span class="travel-deal">₱1 Data Deals ›</span>
+    </div>
+  </div>
+
+  <div class="card explore-card">
+    <h3>Explore More</h3>
+    <div class="explore-grid">
+      <div><div class="round-icon">VIP</div><b>FranzVIP</b><small>Become a member</small></div>
+      <div><div class="round-icon">AC</div><b>Exclusive perks!</b><small>Create your profile now</small></div>
+      <div><div class="round-icon">🎁</div><b>Refer For Rewards</b><small>Up to 500 coins</small></div>
+      <div><div class="round-icon">₱1M</div><b>Chance to Win!</b><small>Win up to ₱2,000,000!</small></div>
+    </div>
+  </div>
+
+  <div class="card wallet-card">
+    <h3>My Wallet</h3>
+    <div class="wallet-grid">
+      <div><div class="wallet-icon">▱</div><b>FranzPay</b><button onclick="alert('FranzPay')">Activate</button></div>
+      <div><div class="wallet-icon">F</div><b>Coins</b><small>Check in now!</small></div>
+      <div><div class="wallet-icon">▤</div><b>Vouchers</b><small>0 Voucher</small></div>
+      <div><div class="wallet-icon">⌂</div><b>FranzBank</b><small>Download App</small></div>
+    </div>
+  </div>
+
+  <div class="card financial-card">
+    <div class="section-title me-title"><span>Financial Services</span><span onclick="alert('More financial services')">See More ›</span></div>
+    <div class="financial-grid">
+      <div class="finance-item"><span class="finance-icon">◷</span><div><b>FranzSpaylater</b><small>Credit up to ₱50,000</small></div><span>›</span></div>
+      <div class="finance-item"><span class="finance-icon">⌂</span><div><b>FranzBank</b><small>Get up to ₱1,999 in rewards</small></div><span>›</span></div>
+      <div class="finance-item"><span class="finance-icon">✓</span><div><b>Insurance</b><small>20% cashback, pay with FranzBank</small></div><span>›</span></div>
+    </div>
+  </div>
+
+  <div class="card profile-pick-card">
+    <div class="section-title me-title"><span>Profile Picture</span></div>
+    <p>Choose a picture below. No upload is required.</p>
+    <div id="avatarPicker" class="avatar-picker"></div>
+  </div>
+
+  <div class="card">
+    <div class="menu-row"><span>Account Settings</span><span>›</span></div>
+    <div class="menu-row"><span>My Orders</span><span>›</span></div>
+    <div class="menu-row"><span>Vouchers</span><span>›</span></div>
+    <div class="menu-row"><span>Help Center</span><span>›</span></div>
+    <div class="menu-row" onclick="logout()" style="color:#2563eb;cursor:pointer"><span>Log out</span><span>›</span></div>
+  </div>
+</section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="navigate('home',this)"><span class="nav-icon">⌂</span>Home</button>
+    <button class="nav-item" onclick="navigate('cart',this)"><span class="nav-icon">▢</span>Cart</button>
+    <button class="nav-item" onclick="navigate('notification',this)"><span class="nav-icon">◉</span>Notification</button>
+    <button class="nav-item" onclick="navigate('me',this)"><span class="nav-icon">●</span>Me</button>
+  </nav>
+</section>
+
+<div class="card" id="meOrdersCard" style="margin-top:12px"><h3>My Orders</h3><div id="myOrders"></div></div>
+
+<div id="orderStatusModal" class="modal hidden">
+ <div class="modal-box order-status-modal-box">
+  <div class="modal-head"><b id="orderStatusTitle">My Orders</b><button class="close" onclick="closeModal('orderStatusModal')">×</button></div>
+  <div id="orderStatusContent"></div>
+ </div>
+</div>
+
+<div id="orderDetailModal" class="modal hidden">
+ <div class="modal-box order-detail-modal-box">
+  <div class="modal-head"><b>Order Details</b><button class="close" onclick="closeModal('orderDetailModal')">×</button></div>
+  <div id="orderDetailContent"></div>
+ </div>
+</div>
+
+<div id="franzLoadingOverlay" class="franz-loading-overlay hidden" aria-hidden="true">
+ <div class="franz-loading-shell">
+  <div class="bubble-layer" id="franzLoadingBubbles"></div>
+  <div class="franz-loading-inner">
+   <div class="franz-loading-dots"><span>°</span><span>•</span><span>°</span><span>•</span><span>°</span></div>
+   <div class="franz-loading-text">Please wait...</div>
+  </div>
+ </div>
+</div>
+
+<div id="productModal" class="modal hidden">
+ <div class="modal-box">
+  <div class="modal-head"><b>Product Details</b><button class="close" onclick="closeModal('productModal')">×</button></div>
+  <div id="productDetail"></div>
+ </div>
+</div>
+
+<div id="reviewModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><b>Rate your order</b><button class="close" onclick="closeModal('reviewModal')">×</button></div><div id="reviewContent"></div></div></div>
+
+<div id="buyAddressModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="address-flow-card">
+   <div class="bubble-layer" id="buyAddressBubbles"></div>
+   <div class="address-flow-inner" id="buyAddressContent"></div>
+  </div>
+ </div>
+</div>
+
+<div id="addressFormModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="address-form-shell">
+   <div class="bubble-layer" id="addressFormBubbles"></div>
+   <div class="address-form-head"><b>𝒜𝒟𝒟 𝒜𝒟𝒟ℛℰ𝒮𝒮</b><button class="address-form-close" onclick="closeModal('addressFormModal')">×</button></div>
+   <div id="addressFormContent"></div>
+  </div>
+ </div>
+</div>
+
+<div id="locationPickerModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="location-picker-shell">
+   <div class="bubble-layer" id="locationPickerBubbles"></div>
+   <div class="location-picker-head"><b id="locationPickerTitle">Select</b><button class="address-form-close" onclick="closeModal('locationPickerModal')">×</button></div>
+   <input id="locationSearch" class="location-search" type="search" autocomplete="off" placeholder="Search...">
+   <div id="locationList" class="location-list"></div>
+  </div>
+ </div>
+</div>
+
+<div id="checkoutModal" class="modal hidden">
+ <div class="modal-box">
+  <div class="modal-head"><b>Checkout</b><button class="close" onclick="closeModal('checkoutModal')">×</button></div>
+  <div id="checkoutContent"></div>
+ </div>
+</div>
+
+<div id="franzAlertModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="franz-theme-shell">
+   <div class="bubble-layer" id="franzAlertBubbles"></div>
+   <button class="franz-theme-close" onclick="closeModal('franzAlertModal')">×</button>
+   <div class="franz-theme-inner"><div class="franz-theme-title" id="franzAlertTitle">This page says</div><div class="franz-theme-message" id="franzAlertMessage"></div><button class="franz-theme-btn" onclick="closeModal('franzAlertModal')">OK</button></div>
+  </div>
+ </div>
+</div>
+
+<div id="addressSuccessModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="franz-theme-shell">
+   <div class="bubble-layer" id="addressSuccessBubbles"></div>
+   <div class="franz-theme-inner"><div class="franz-theme-title">YEHEYY YOU HAVE UPDATED YOUR ADDRESSS SUCCSESFULLY</div><div class="franz-theme-message">Your delivery address has been saved to your FranzOnlineShop account.</div><button class="franz-theme-btn" onclick="continueAfterAddressSave()">𝐂𝐎𝐍𝐓𝐈𝐍𝐔𝐄</button></div>
+  </div>
+ </div>
+</div>
+
+<div id="unsupportedPaymentModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="franz-theme-shell">
+   <div class="bubble-layer" id="unsupportedPaymentBubbles"></div>
+   <button class="franz-theme-close" onclick="closeModal('unsupportedPaymentModal')">×</button>
+   <div class="franz-theme-inner"><div class="franz-theme-title">𝑻𝑯𝑰𝑺 𝑷𝑨𝑮𝑬 𝑺𝑨𝒀𝑺</div><div class="franz-theme-message">𝑻𝑯𝑰𝑺 𝑭𝑬𝑨𝑻𝑼𝑹𝑬 𝑰𝑺 𝑼𝑵𝑫𝑬𝑹𝑾𝑶𝑹𝑲 𝑩𝒀 𝑭𝑹𝑨𝑵𝒁</div><button class="franz-theme-btn" onclick="closeModal('unsupportedPaymentModal')">𝐎𝐊</button></div>
+  </div>
+ </div>
+</div>
+
+<div id="gcashModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="gcash-card">
+   <div class="bubble-layer" id="gcashBubbles"></div>
+   <button class="franz-theme-close" onclick="closeModal('gcashModal')">×</button>
+   <div class="gcash-inner" id="gcashContent"></div>
+  </div>
+ </div>
+</div>
+
+<div id="paymentWaitingModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="franz-theme-shell">
+   <div class="bubble-layer" id="paymentWaitingBubbles"></div>
+   <div class="franz-theme-inner"><div class="franz-theme-title">𝐘𝐎𝐔𝐑 𝐏𝐀𝐘𝐌𝐄𝐍𝐓 𝐈𝐒 𝐖𝐀𝐈𝐓𝐈𝐍𝐆 𝐅𝐎𝐑 𝐀𝐃𝐌𝐈𝐍 𝐀𝐏𝐏𝐑𝐎𝐕𝐀𝐋</div><div class="franz-theme-message" id="paymentWaitingMessage">Your payment proof was saved with your order.</div><button class="franz-theme-btn" onclick="finishPaymentWaiting()">𝐂𝐎𝐍𝐓𝐈𝐍𝐔𝐄</button></div>
+  </div>
+ </div>
+</div>
+
+<div id="codWaitingModal" class="modal hidden">
+ <div class="modal-box" style="background:transparent;padding:0;overflow:visible">
+  <div class="franz-theme-shell">
+   <div class="bubble-layer" id="codWaitingBubbles"></div>
+   <div class="franz-theme-inner"><div class="franz-theme-title">𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 𝐅𝐎𝐑 𝐘𝐎𝐔𝐑 𝐓𝐑𝐔𝐒𝐓𝐈𝐍𝐆 𝐖𝐀𝐈𝐓𝐈𝐍𝐆 𝐅𝐎𝐑 𝐀𝐃𝐌𝐈𝐍 𝐀𝐏𝐏𝐑𝐎𝐕𝐀𝐋 𝐅𝐎𝐑 𝐂𝐎𝐃</div><div class="franz-theme-message">Your COD order was saved successfully and is waiting for approval.</div><button class="franz-theme-btn" onclick="finishCodWaiting()">𝐂𝐎𝐍𝐓𝐈𝐍𝐔𝐄</button></div>
+  </div>
+ </div>
+</div>
+
+
+<script>
+const baseProducts=[
+ {id:1,name:"Classic T-Shirt",price:299,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=80",desc:"Comfortable everyday shirt made for casual wear.",sizes:["S","M","L","XL"],colors:["White","Black","Blue"]},
+ {id:2,name:"Everyday Sneakers",price:899,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80",desc:"Lightweight sneakers designed for everyday comfort.",sizes:["38","39","40","41","42"],colors:["White","Black"]},
+ {id:3,name:"Minimal Backpack",price:649,img:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80",desc:"A clean and practical backpack for school, work, or travel.",sizes:[],colors:["Black","Gray","Blue"]},
+ {id:4,name:"Wireless Headphones",price:1299,img:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80",desc:"Enjoy clear sound and comfortable listening throughout the day.",sizes:[],colors:["Black","White"]},
+ {id:5,name:"Smart Watch",price:1599,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80",desc:"Modern smartwatch style for your everyday activities.",sizes:[],colors:["Black","Silver"]},
+ {id:6,name:"Water Bottle",price:249,img:"https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=700&q=80",desc:"Reusable bottle for school, work, workouts, and travel.",sizes:[],colors:["Blue","Black","White"]}
+];
+let products=[];
+let productRatings={};
+function loadRatings(){try{productRatings=JSON.parse(localStorage.getItem("franz_product_ratings")||"{}");if(!productRatings||typeof productRatings!=="object")productRatings={}}catch(e){productRatings={}}}
+function ratingFor(id){const r=productRatings[String(id)];return r&&r.count?{avg:Number(r.avg)||0,count:Number(r.count)||0}: {avg:0,count:0}}
+function saveRatings(){localStorage.setItem("franz_product_ratings",JSON.stringify(productRatings))}
+function loadProducts(){
+  let admin=[];
+  try{admin=JSON.parse(localStorage.getItem("franz_admin_products")||"[]");if(!Array.isArray(admin))admin=[];}catch(e){admin=[]}
+  admin=admin.map((p,i)=>({...p,id:String(p.id||("admin-"+i)),name:String(p.name||""),price:Number(p.price)||0,img:String(p.img||""),desc:String(p.desc||"")}));
+  products=[...baseProducts.map(p=>({...p,id:String(p.id)})),...admin.filter(ap=>!baseProducts.some(bp=>String(bp.id)===String(ap.id)))];
+}
+loadProducts();
+loadRatings();
+let cart=JSON.parse(localStorage.getItem("franz_cart")||"[]");
+let orders=JSON.parse(localStorage.getItem("franz_orders")||"[]");
+let notifications=JSON.parse(localStorage.getItem("franz_notifications")||"[]");
+let selectedProduct=null;
+let selectedSize="";
+let selectedColor="";
+let checkoutItem=null;
+window.checkoutPaymentMethod="cod";window.checkoutVoucher=0;window.checkoutRedeem="";
+
+function save(){localStorage.setItem("franz_cart",JSON.stringify(cart));localStorage.setItem("franz_orders",JSON.stringify(orders));localStorage.setItem("franz_notifications",JSON.stringify(notifications))}
+function money(n){return "₱"+Number(n).toLocaleString("en-PH",{minimumFractionDigits:2})}
+function user(){return JSON.parse(localStorage.getItem("franz_user")||"null")}
+function showLogin(){loginBox.classList.remove("hidden");signupBox.classList.add("hidden")}
+function showSignup(){loginBox.classList.add("hidden");signupBox.classList.remove("hidden")}
+function getAccounts(){
+  try{const a=JSON.parse(localStorage.getItem("franz_accounts")||"[]");return Array.isArray(a)?a:[]}catch(e){return []}
+}
+function setAccounts(a){localStorage.setItem("franz_accounts",JSON.stringify(a))}
+function signup(){
+ let u=signUser.value.trim(),n=signNumber.value.trim(),e=signEmail.value.trim().toLowerCase(),p=signPass.value;
+ if(!u||!n||!e||!p){signError.textContent="Please complete all fields.";return}
+ if(p.length<6){signError.textContent="Password must be at least 6 characters.";return}
+ let accounts=getAccounts();
+ // migrate the old single-account record once
+ const old=user();
+ if(old && !accounts.some(a=>a.username===old.username && a.email===old.email)){accounts.push(old);}
+ if(accounts.some(a=>a.username.toLowerCase()===u.toLowerCase())){signError.textContent="Username already exists.";return}
+ if(accounts.some(a=>a.email.toLowerCase()===e)){signError.textContent="Email already exists.";return}
+ const account={username:u,number:n,email:e,password:p,avatar:avatarChoices[0],createdAt:new Date().toISOString()};
+ accounts.push(account);setAccounts(accounts);
+ localStorage.setItem("franz_user",JSON.stringify(account));
+ signError.textContent="";showLogin();loginUser.value=u;loginPass.value=p;login();
+}
+function login(){
+ let u=loginUser.value.trim(),p=loginPass.value;
+ let accounts=getAccounts();
+ const old=user();
+ if(old && !accounts.some(a=>a.username===old.username && a.email===old.email)){accounts.push(old);setAccounts(accounts)}
+ let saved=accounts.find(a=>a.username.toLowerCase()===u.toLowerCase()||a.email.toLowerCase()===u.toLowerCase());
+ if(!saved){loginError.textContent="Account not found. Please create an account first.";return}
+ if(saved.password!==p){loginError.textContent="Incorrect username or password.";return}
+ localStorage.setItem("franz_user",JSON.stringify(saved));
+ loginError.textContent="";auth.classList.add("hidden");welcome.classList.remove("hidden");
+}
+function enterShop(){welcome.classList.add("hidden");app.classList.remove("hidden");renderAll()}
+function logout(){app.classList.add("hidden");auth.classList.remove("hidden");welcome.classList.add("hidden");showLogin()}
+function navigate(name,el){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(name+"Page").classList.add("active");
+ document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));el.classList.add("active");
+ if(name==="cart")renderCart(); if(name==="me")renderMe(); if(name==="notification")renderNotifications();
+ window.scrollTo(0,0)
+}
+function refreshProductsFromAdmin(){loadProducts();renderProducts();if(document.getElementById("cartPage").classList.contains("active"))renderCart()}
+window.addEventListener("storage",e=>{if(e.key==="franz_admin_products"){refreshProductsFromAdmin()} if(e.key==="franz_product_ratings"){loadRatings();renderProducts();renderMyOrders();}});
+try{const productChannel=new BroadcastChannel("franz_shop_products");productChannel.onmessage=()=>refreshProductsFromAdmin();}catch(e){}
+setInterval(()=>{try{const raw=localStorage.getItem("franz_admin_products")||"[]";const sig=raw.length+":"+raw.slice(-120);if(window.__franzProductsSig!==sig){window.__franzProductsSig=sig;refreshProductsFromAdmin();}}catch(e){}},1000);
+
+function handleProductSearch(value){
+  const input=document.getElementById("search");
+  if(input && input.value!==String(value||""))input.value=String(value||"");
+  renderProducts();
+}
+function renderProducts(){
+ let q=(document.getElementById("search")?.value||"").trim().toLowerCase();
+ let list=products.filter(p=>{
+   const hay=(String(p.name||"")+" "+productDescription(p)).toLowerCase();
+   return !q || hay.includes(q);
+ });
+ productsEl=document.getElementById("products");
+ productsEl.innerHTML=list.map(p=>`
+ <article class="product" onclick="openProduct(${p.id})">
+  <img src="${p.img}" alt="${p.name}">
+  <div class="product-body">
+   <div class="product-name">${p.name}</div><div class="price">${money(p.price)}</div>
+   ${(()=>{const r=ratingFor(p.id);return r.count?`<div class="rating-row"><span class="star">★</span> ${r.avg.toFixed(1)} · ${r.count} review${r.count===1?'':'s'}</div>`:`<div class="rating-row no-reviews">☆ No reviews yet</div>`})()}
+   <div class="qty-row" onclick="event.stopPropagation()"><div class="qty"><button onclick="changeCardQty(${p.id},-1)">−</button><span id="cq${p.id}">1</span><button onclick="changeCardQty(${p.id},1)">+</button></div><small style="color:#7a879a">Qty</small></div>
+   <div class="small-actions" onclick="event.stopPropagation()"><button class="buy" onclick="quickBuy(${p.id})">Buy now</button><button class="add" onclick="addCart(${p.id},1)">Add to cart</button></div>
+  </div>
+ </article>`).join("")||'<div class="empty">No products found.</div>';
+}
+function changeCardQty(id,d){let el=document.getElementById("cq"+id);let v=Math.max(1,Number(el.textContent)+d);el.textContent=v}
+function quickBuy(id){
+  const qEl=document.getElementById("cq"+id);
+  const q=qEl?Math.max(1,Number(qEl.textContent)||1):1;
+  selectedProduct=products.find(p=>String(p.id)===String(id));
+  selectedSize=selectedProduct?.sizes?.[0]||"";
+  selectedColor=selectedProduct?.colors?.[0]||"";
+  checkoutItem={id:selectedProduct.id,qty:q,size:selectedSize,color:selectedColor};
+  openBuyNowAddressFlow();
+}
+function openProduct(id){
+ selectedProduct=products.find(p=>p.id===id);selectedSize=selectedProduct.sizes[0]||"";selectedColor=selectedProduct.colors[0]||"";
+ productDetail.innerHTML=`
+  <img class="detail-img" src="${selectedProduct.img}">
+  <div class="detail-title">${selectedProduct.name}</div><div class="price">${money(selectedProduct.price)}</div>
+  ${(()=>{const r=ratingFor(selectedProduct.id);return r.count?`<div class="rating-row"><span class="star">★</span> ${r.avg.toFixed(1)} · ${r.count} review${r.count===1?'':'s'}</div>`:`<div class="rating-row no-reviews">☆ No reviews yet — ratings appear after customers receive and rate their order.</div>`})()}
+  <p class="detail-desc">${escapeHtml(productDescription(selectedProduct))}</p>
+  ${selectedProduct.sizes.length?`<div class="option-label">Size</div><div class="options">${selectedProduct.sizes.map(s=>`<button class="option ${s===selectedSize?'selected':''}" onclick="chooseSize('${s}',this)">${s}</button>`).join("")}</div>`:""}
+  ${selectedProduct.colors.length?`<div class="option-label">Color</div><div class="options">${selectedProduct.colors.map(c=>`<button class="option ${c===selectedColor?'selected':''}" onclick="chooseColor('${c}',this)">${c}</button>`).join("")}</div>`:""}
+  <div class="option-label">Quantity</div><div class="qty-row"><div class="qty"><button onclick="detailQty(-1)">−</button><span id="detailQty">1</span><button onclick="detailQty(1)">+</button></div></div>
+  <div class="small-actions" style="margin-top:16px"><button class="add" onclick="addDetailCart()">Add to cart</button><button class="buy" onclick="buyDetail()">Buy now</button></div>`;
+ productModal.classList.remove("hidden")
+}
+function chooseSize(v,b){selectedSize=v;b.parentNode.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));b.classList.add("selected")}
+function chooseColor(v,b){selectedColor=v;b.parentNode.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));b.classList.add("selected")}
+function detailQty(d){let e=document.getElementById("detailQty");e.textContent=Math.max(1,Number(e.textContent)+d)}
+function addCart(id,qty=1,size="",color=""){
+ let p=products.find(x=>String(x.id)===String(id));
+ if(!p)return;
+ let key=id+"|"+size+"|"+color;let item=cart.find(x=>x.key===key);
+ if(item)item.qty+=Number(qty)||1;else cart.push({key,id,qty:Number(qty)||1,size,color});
+ notifications.unshift({title:"Added to Cart",text:p.name+" was added to your cart.",time:new Date().toLocaleString()});
+ save();renderCart();renderMe();
+ alert("𝑺𝑼𝑪𝑪𝑬𝑺𝑺𝑭𝑼𝑳 𝑨𝑫𝑫𝑬𝑫 𝑻𝑶 𝑪𝑨𝑹𝑻");
+}
+function addDetailCart(){let q=Number(detailQty.textContent);addCart(selectedProduct.id,q,selectedSize,selectedColor);closeModal("productModal")}
+function buyDetail(){let q=Number(detailQty.textContent);checkoutItem={id:selectedProduct.id,qty:q,size:selectedSize,color:selectedColor};closeModal("productModal");openBuyNowAddressFlow()}
+function removeCart(key){cart=cart.filter(x=>x.key!==key);save();renderCart();renderMe()}
+function updateCart(key,d){let x=cart.find(i=>i.key===key);if(!x)return;x.qty=Math.max(1,x.qty+d);save();renderCart();renderMe()}
+function renderCart(){
+ if(!cart.length){cartList.innerHTML='<div class="empty">Your cart is empty.<br>Add products from Home.</div>';cartSummary.innerHTML="";return}
+ cartList.innerHTML=cart.map(i=>{let p=products.find(x=>x.id===i.id);return `<div class="cart-item"><img src="${p.img}"><div class="cart-info"><h4>${p.name}</h4><div class="price">${money(p.price)}</div><small>${i.size?"Size: "+i.size+" ":""}${i.color?"Color: "+i.color:""}</small><div class="qty-row"><div class="qty"><button onclick="updateCart('${i.key}',-1)">−</button><span>${i.qty}</span><button onclick="updateCart('${i.key}',1)">+</button></div><button onclick="removeCart('${i.key}')" style="color:#e04444;background:none;font-size:12px">Remove</button></div></div></div>`}).join("");
+ let total=cart.reduce((s,i)=>s+products.find(p=>p.id===i.id).price*i.qty,0);
+ cartSummary.innerHTML=`<div class="total-line"><span>Total</span><span style="color:#086fe5">${money(total)}</span></div><button class="checkout-btn" onclick="checkoutCart()">Checkout</button>`
+}
+function checkoutCart(){checkoutItem=null;checkoutAddress=null;openCheckout()}
+
+/* ================= BUY NOW ADDRESS FLOW ================= */
+const addressBubbleTimers={};
+let locationPickerLevel="";
+let addressDraft={name:"",number:"",email:"",region:null,province:null,city:null,barangay:null,sitio:""};
+let checkoutAddress=null;
+const locationApiCache={regions:null,provinces:{},cities:{},barangays:{}};
+
+function addressAccount(){
+  const u=user();
+  if(!u)return null;
+  return u;
+}
+function getSavedAddress(){
+  const u=addressAccount();
+  if(!u)return null;
+  if(u.address && typeof u.address==="object")return u.address;
+  if(Array.isArray(u.addresses)&&u.addresses.length)return u.addresses[0];
+  return null;
+}
+function saveAddressToAccount(address){
+  const u=addressAccount();
+  if(!u){alert("Please log in to save your address.");return false;}
+  u.address=JSON.parse(JSON.stringify(address));
+  u.addresses=[u.address];
+  localStorage.setItem("franz_user",JSON.stringify(u));
+  const accounts=getAccounts();
+  const idx=accounts.findIndex(a=>(a.username&&u.username&&a.username.toLowerCase()===u.username.toLowerCase())||(a.email&&u.email&&a.email.toLowerCase()===u.email.toLowerCase()));
+  if(idx>=0){accounts[idx]=u;setAccounts(accounts);}
+  return true;
+}
+function addressText(a){
+  if(!a)return "";
+  return [a.sitio,a.barangay?.name||a.barangay,a.city?.name||a.city,a.province?.name||a.province,a.region?.name||a.region].filter(Boolean).join(", ");
+}
+function addressFullText(a){
+  if(!a)return "";
+  return `${a.name||""} • ${a.number||""} • ${a.email||""}`;
+}
+function startBubbles(layerId){
+  const layer=document.getElementById(layerId);
+  if(!layer)return;
+  if(addressBubbleTimers[layerId])return;
+  const spawn=()=>{
+    if(!document.getElementById(layerId))return;
+    const b=document.createElement("span");
+    b.className="address-bubble";
+    const size=8+Math.random()*34;
+    b.style.width=size+"px";b.style.height=size+"px";
+    b.style.left=(Math.random()*100)+"%";
+    b.style.setProperty("--drift",(Math.random()*90-45)+"px");
+    b.style.setProperty("--drift2",(Math.random()*120-60)+"px");
+    b.style.animationDuration=(4.5+Math.random()*5.5)+"s";
+    layer.appendChild(b);
+    setTimeout(()=>b.remove(),11000);
+  };
+  for(let i=0;i<8;i++)setTimeout(spawn,i*180);
+  addressBubbleTimers[layerId]=setInterval(spawn,520);
+}
+function stopBubbles(layerId){
+  const timer=addressBubbleTimers[layerId];
+  if(timer){clearInterval(timer);delete addressBubbleTimers[layerId];}
+  const layer=document.getElementById(layerId);
+  if(layer)layer.innerHTML="";
+}
+function showBuyAddressPrompt(){
+  const saved=getSavedAddress();
+  const safe=saved?JSON.stringify(saved).replace(/</g,"\\u003c"):"";
+  buyAddressContent.innerHTML=`
+    <div class="address-flow-title">𝒜𝒟𝒟 𝒜𝒩 𝒜𝒟𝒟ℛℰ𝒮𝒮</div>
+    <div class="address-flow-sub">${saved?"You already have a saved delivery address. You can use it or edit it before continuing.":"Add your delivery address before continuing to checkout."}</div>
+    ${saved?`<div class="saved-address-card"><b>${escapeHtml(saved.name||"Saved Address")}</b><div class="addr-line">${escapeHtml(addressFullText(saved))}</div><div class="addr-line">${escapeHtml(addressText(saved))}</div>
+      <div class="address-actions"><button class="address-secondary" onclick="editSavedAddress()">𝒠𝒟ℐ𝒯</button><button class="address-continue" onclick="useSavedAddress()">𝒞𝒪𝒩𝒯ℐ𝒩𝒰ℰ</button></div></div>`
+    :`<button class="address-main-btn" onclick="openAddressForm()">𝒜𝒟𝒟 𝒜𝒩 𝒜𝒟𝒟ℛℰ𝒮𝒮</button>`}
+    ${saved?`<button class="address-main-btn" style="margin-top:9px;font-size:14px;padding:13px" onclick="openAddressForm()">＋ Add / Change Address</button>`:""}
+  `;
+}
+function openBuyNowAddressFlow(){
+  if(!checkoutItem)return;
+  showBuyAddressPrompt();
+  document.getElementById("buyAddressModal").classList.remove("hidden");
+  startBubbles("buyAddressBubbles");
+}
+function useSavedAddress(){
+  const saved=getSavedAddress();
+  if(!saved){openAddressForm();return;}
+  checkoutAddress=JSON.parse(JSON.stringify(saved));
+  closeModal("buyAddressModal");
+  openCheckout();
+}
+function editSavedAddress(){openAddressForm(getSavedAddress());}
+function openAddressForm(existing){
+  const a=existing||{};
+  addressDraft={
+    name:a.name||"",
+    number:a.number||"",
+    email:a.email||"",
+    region:a.region||null,
+    province:a.province||null,
+    city:a.city||null,
+    barangay:a.barangay||null,
+    sitio:a.sitio||""
+  };
+  renderAddressForm();
+  document.getElementById("addressFormModal").classList.remove("hidden");
+  startBubbles("addressFormBubbles");
+}
+function renderAddressForm(){
+  const d=addressDraft;
+  addressFormContent.innerHTML=`
+    <div class="address-note">Please complete your delivery details. Location choices are linked: Region → Province → City/Municipality → Barangay.</div>
+    <div class="field"><label>𝒩𝒜ℳℰ</label><input id="addrName" autocomplete="name" value="${escapeAttr(d.name)}" placeholder="Full name"></div>
+    <div class="field"><label>𝒩𝒰ℳℬℰℛ</label><input id="addrNumber" type="tel" inputmode="tel" autocomplete="tel" value="${escapeAttr(d.number)}" placeholder="Phone number"></div>
+    <div class="field"><label>ℰℳ𝒜ℐℒ</label><input id="addrEmail" type="email" autocomplete="email" value="${escapeAttr(d.email)}" placeholder="Email address"></div>
+    <div class="field"><label>ℛℰ𝒢ℐ𝒪𝒩</label><button type="button" class="address-select-btn ${d.region?"has-value":""}" onclick="openLocationPicker('region')">${escapeHtml(d.region?.name||"Select Region")} <span style="float:right">⌄</span></button></div>
+    <div class="field"><label>𝒫ℛ𝒪𝒱ℐ𝒩𝒞ℰ</label><button type="button" class="address-select-btn ${d.province?"has-value":""}" ${d.region?"":"disabled"} onclick="openLocationPicker('province')">${escapeHtml(d.province?.name||"Select Province")} <span style="float:right">⌄</span></button></div>
+    <div class="field"><label>𝒞ℐ𝒯𝒴 / 𝑀𝒰𝒩ℐ𝒞ℐ𝒫𝒜ℒℐ𝒯𝒴</label><button type="button" class="address-select-btn ${d.city?"has-value":""}" ${d.province?"":"disabled"} onclick="openLocationPicker('city')">${escapeHtml(d.city?.name||"Select City/Municipality")} <span style="float:right">⌄</span></button></div>
+    <div class="field"><label>ℬℛ𝒢𝒴</label><button type="button" class="address-select-btn ${d.barangay?"has-value":""}" ${d.city?"":"disabled"} onclick="openLocationPicker('barangay')">${escapeHtml(d.barangay?.name||"Select Barangay")} <span style="float:right">⌄</span></button></div>
+    <div class="field"><label>𝒮ℐ𝒯ℐ𝒪</label><input id="addrSitio" autocomplete="street-address" value="${escapeAttr(d.sitio)}" placeholder="Sitio / Purok / Street details"></div>
+    <button class="address-save-btn" onclick="saveAddressAndContinue()">SAVE ADDRESS &amp; CONTINUE</button>
+  `;
+}
+function collectAddressFields(){
+  addressDraft.name=(document.getElementById("addrName")?.value||"").trim();
+  addressDraft.number=(document.getElementById("addrNumber")?.value||"").trim();
+  addressDraft.email=(document.getElementById("addrEmail")?.value||"").trim();
+  addressDraft.sitio=(document.getElementById("addrSitio")?.value||"").trim();
+}
+async function apiJson(url){
+  const r=await fetch(url,{method:"GET",cache:"force-cache"});
+  if(!r.ok)throw new Error("Location service unavailable");
+  const j=await r.json();
+  return Array.isArray(j)?j:(Array.isArray(j.data)?j.data:(j.data?.data||[]));
+}
+async function loadRegions(){
+  if(locationApiCache.regions)return locationApiCache.regions;
+  locationApiCache.regions=await apiJson("https://psgc.cloud/api/v2/regions");
+  return locationApiCache.regions;
+}
+async function loadProvinces(region){
+  const key=String(region.code||region.name);
+  if(locationApiCache.provinces[key])return locationApiCache.provinces[key];
+  const arr=await apiJson("https://psgc.cloud/api/v2/regions/"+encodeURIComponent(region.code||region.name)+"/provinces");
+  locationApiCache.provinces[key]=arr;return arr;
+}
+async function loadCitiesForRegion(region){
+  const key="region:"+String(region.code||region.name);
+  if(locationApiCache.cities[key])return locationApiCache.cities[key];
+  const arr=await apiJson("https://psgc.cloud/api/v2/regions/"+encodeURIComponent(region.code||region.name)+"/cities-municipalities");
+  locationApiCache.cities[key]=arr;return arr;
+}
+async function loadCitiesForProvince(province){
+  const key=String(province.code||province.name);
+  if(locationApiCache.cities[key])return locationApiCache.cities[key];
+  const arr=await apiJson("https://psgc.cloud/api/v2/provinces/"+encodeURIComponent(province.code||province.name)+"/cities-municipalities");
+  locationApiCache.cities[key]=arr;return arr;
+}
+async function loadBarangays(city){
+  const key=String(city.code||city.name);
+  if(locationApiCache.barangays[key])return locationApiCache.barangays[key];
+  const arr=await apiJson("https://psgc.cloud/api/v2/cities-municipalities/"+encodeURIComponent(city.code||city.name)+"/barangays");
+  locationApiCache.barangays[key]=arr;return arr;
+}
+function locationName(x){return x&&x.name?x.name:String(x||"")}
+function locationParentMatches(x,parent){
+  if(!x||!parent)return false;
+  const p=parent.code||parent.name;
+  return String(x.region_code||x.region||x.province_code||x.province||x.parent_code||"")===String(p);
+}
+async function openLocationPicker(level){
+  collectAddressFields();
+  locationPickerLevel=level;
+  const title={region:"ℛℰ𝒢ℐ𝒪𝒩",province:"𝒫ℛ𝒪𝒱ℐ𝒩𝒞ℰ",city:"𝒞ℐ𝒯𝒴 / 𝑀𝒰𝒩ℐ𝒞ℐ𝒫𝒜ℒℐ𝒯𝒴",barangay:"ℬℛ𝒢𝒴"}[level]||"Select";
+  locationPickerTitle.textContent=title;
+  locationSearch.value="";
+  locationList.innerHTML='<div class="location-empty">Loading locations…</div>';
+  locationPickerModal.classList.remove("hidden");
+  startBubbles("locationPickerBubbles");
+  try{
+    let list=[];
+    if(level==="region")list=await loadRegions();
+    if(level==="province"){
+      if(!addressDraft.region){throw new Error("Please select a region first.");}
+      list=await loadProvinces(addressDraft.region);
+      if(!list.length && String(addressDraft.region.code||"").slice(0,2)==="13"){
+        list=[{code:"NCR-METRO-MANILA",name:"Metro Manila (NCR)",isSynthetic:true}];
+      }
+    }
+    if(level==="city"){
+      if(!addressDraft.province){throw new Error("Please select a province first.");}
+      if(addressDraft.province.isSynthetic){
+        list=await loadCitiesForRegion(addressDraft.region);
+      }else list=await loadCitiesForProvince(addressDraft.province);
+    }
+    if(level==="barangay"){
+      if(!addressDraft.city){throw new Error("Please select a city/municipality first.");}
+      list=await loadBarangays(addressDraft.city);
+    }
+    locationList._items=list||[];
+    renderLocationList();
+  }catch(e){
+    locationList._items=[];
+    locationList.innerHTML='<div class="location-empty">Unable to load locations right now.<br><small>'+escapeHtml(e.message||"Please check your internet connection.")+'</small></div>';
+  }
+}
+function renderLocationList(){
+  const all=locationList._items||[];
+  const q=(locationSearch.value||"").trim().toLowerCase();
+  const filtered=q?all.filter(x=>locationName(x).toLowerCase().includes(q)):all;
+  if(!filtered.length){locationList.innerHTML='<div class="location-empty">No matching location found.</div>';return;}
+  locationList.innerHTML=filtered.map((x,i)=>`<button class="location-option" onclick="chooseLocation(${i})">${escapeHtml(locationName(x))}${x.type?`<small>${escapeHtml(x.type)}</small>`:""}</button>`).join("");
+  locationList._filtered=filtered;
+}
+function chooseLocation(index){
+  const x=(locationList._filtered||[])[index];if(!x)return;
+  if(locationPickerLevel==="region"){
+    addressDraft.region=x;addressDraft.province=null;addressDraft.city=null;addressDraft.barangay=null;
+  }else if(locationPickerLevel==="province"){
+    addressDraft.province=x;addressDraft.city=null;addressDraft.barangay=null;
+  }else if(locationPickerLevel==="city"){
+    addressDraft.city=x;addressDraft.barangay=null;
+  }else if(locationPickerLevel==="barangay"){
+    addressDraft.barangay=x;
+  }
+  closeModal("locationPickerModal");renderAddressForm();
+}
+function saveAddressAndContinue(){
+  collectAddressFields();
+  if(!addressDraft.name||!addressDraft.number||!addressDraft.email||!addressDraft.region||!addressDraft.province||!addressDraft.city||!addressDraft.barangay||!addressDraft.sitio){
+    alert("Please complete all address fields.");return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addressDraft.email)){alert("Please enter a valid email address.");return;}
+  if(!/^09\d{9}$/.test(addressDraft.number.replace(/\s|-/g,""))){alert("Please enter a valid Philippine mobile number (09XXXXXXXXX).");return;}
+  if(!addressAccount()){alert("Please log in to your account before saving an address.");return;}
+  addressDraft.number=addressDraft.number.replace(/\s|-/g,"");
+  const saved=JSON.parse(JSON.stringify(addressDraft));
+  if(!saveAddressToAccount(saved))return;
+  checkoutAddress=saved;
+  closeModal("addressFormModal");closeModal("buyAddressModal");
+  document.getElementById("addressSuccessModal").classList.remove("hidden");
+  startBubbles("addressSuccessBubbles");
+}
+function continueAfterAddressSave(){
+  closeModal("addressSuccessModal");
+  openCheckout();
+}
+function escapeHtml(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+function escapeAttr(v){return escapeHtml(v).replace(/`/g,"&#96;");}
+
+function normalizePlaceName(v){return String(v||"").toLowerCase().replace(/\b(city of|city|municipality|municipality of)\b/g," ").replace(/[^a-z0-9]+/g," ").trim()}
+function regionCode(a){return String(a?.region?.code||"").slice(0,2)}
+function computeShipping(a){
+  const city=normalizePlaceName(a?.city?.name||a?.city);
+  const province=normalizePlaceName(a?.province?.name||a?.province);
+  const rc=regionCode(a);
+  if(city.includes("baybay"))return 10;
+  if(province.includes("leyte"))return 40;
+  if(rc==="08")return 60;
+  if(["06","07"].includes(rc))return 80;
+  if(["09","10","11","12","13"].includes(rc))return 120;
+  if(rc==="14")return 150;
+  if(["01","02","03","04","05"].includes(rc))return 120;
+  return 100;
+}
+function addDays(base,days){const d=new Date(base);d.setDate(d.getDate()+days);return d}
+function shortDate(d){return d.toLocaleDateString("en-US",{month:"short",day:"numeric"}).replace(" "," ")}
+function expectedDateRange(){return shortDate(addDays(new Date(),5))+"–"+shortDate(addDays(new Date(),7))}
+function smartProductDescription(p){
+  const name=String(p?.name||"Product");
+  const colors=(p?.colors||[]).slice(0,3).join(", ");
+  const sizes=(p?.sizes||[]).slice(0,5).join(", ");
+  const hints=[];
+  if(/shoe|sneaker|sand(al|al)|foot/i.test(name))hints.push("comfortable everyday footwear with a versatile look");
+  else if(/shirt|dress|top|hoodie|jacket|clothing|wear/i.test(name))hints.push("a stylish everyday piece designed for easy, comfortable wear");
+  else if(/bag|backpack|pouch/i.test(name))hints.push("a practical carry-all made for everyday use");
+  else if(/phone|headphone|earbud|watch|speaker|electronic/i.test(name))hints.push("a convenient everyday gadget with a clean modern feel");
+  else hints.push("a practical everyday item with a clean and useful design");
+  return `${name} is ${hints[0]}. It is a simple choice for daily use, with dependable style and convenience.${colors?" Available in "+colors+".":""}${sizes?" Size options include "+sizes+".":""}`;
+}
+function productDescription(p){return String(p?.desc||"").trim()||smartProductDescription(p)}
+
+function renderCheckoutPaymentMethods(selected){
+  const methods=[
+    {id:"cod",name:"Cash on Delivery",sub:"Pay when your order arrives.",icon:"₱"},
+    {id:"franzpay",name:"FranzOnlineShopPay",sub:"Not available yet.",icon:"F"},
+    {id:"franzpaylater",name:"FranzOnlineShopPaylater",sub:"Pay later feature.",icon:"P"},
+    {id:"gcash",name:"GCash",sub:"Send payment and upload your receipt.",icon:"G"}
+  ];
+  return methods.map(m=>`<button class="payment-method ${selected===m.id?"selected":""}" onclick="selectPaymentMethod('${m.id}')"><span class="pm-icon ${m.id==='gcash'?'gcash-mini':''}">${m.icon}</span><span class="pm-main"><b>${m.name}</b><small>${m.sub}</small></span><span class="pm-check">✓</span></button>`).join("");
+}
+function openCheckout(){
+ let items=checkoutItem?[checkoutItem]:cart;
+ if(!items.length){alert("Your cart is empty.");return}
+ const address=checkoutAddress||getSavedAddress();
+ if(checkoutItem&&!address){openBuyNowAddressFlow();return;}
+ if(checkoutItem)checkoutAddress=JSON.parse(JSON.stringify(address));
+ let subtotal=items.reduce((s,i)=>{const p=products.find(p=>String(p.id)===String(i.id));return s+(p?Number(p.price)*Number(i.qty):0)},0);
+ const shipping=computeShipping(checkoutAddress||{});
+ let selected=window.checkoutPaymentMethod||"cod";
+ const voucherDiscount=Number(window.checkoutVoucher||0);
+ const code=String(window.checkoutRedeem||"").trim().toUpperCase();
+ const redeemDiscount=code==="FRANZ100"?100:0;
+ const discount=voucherDiscount+redeemDiscount;
+ const total=Math.max(0,subtotal+shipping-discount);
+ window.currentCheckout={items:items.map(i=>({...i})),subtotal,shipping,discount,total};
+ checkoutContent.innerHTML=`
+  <div class="checkout-v3">
+   <div class="checkout-head-v3"><button class="checkout-back" onclick="closeModal('checkoutModal')">‹</button><h2>Checkout</h2></div>
+   <div class="checkout-section checkout-address-v3">
+    <div class="checkout-pin">⌖</div><div style="flex:1"><b>${escapeHtml(address?.name||"Delivery Address")} <span style="font-weight:500;color:#7b8797">(${escapeHtml(address?.number||"")})</span></b><div class="muted">${escapeHtml(addressText(address))}</div></div>
+    ${checkoutItem?`<button class="checkout-address-edit" onclick="closeModal('checkoutModal');editSavedAddress()">Change</button>`:""}
+   </div>
+   <div class="checkout-section">
+    <div style="font-weight:900;margin-bottom:9px">${items.length===1?"Preferred Seller":"Order Items"}</div>
+    ${items.map(i=>{const p=products.find(x=>String(x.id)===String(i.id));return `<div style="display:flex;gap:10px;padding:9px 0;border-top:1px solid #edf2f7"><img src="${escapeAttr(p?.img||"")}" style="width:72px;height:72px;object-fit:cover;border-radius:12px;background:#eef6ff"><div style="flex:1"><b style="font-size:13px">${escapeHtml(p?.name||"Product")}</b><div style="font-size:12px;color:#66758a;margin-top:3px">${escapeHtml(productDescription(p).slice(0,110))}${productDescription(p).length>110?"…":""}</div><div style="margin-top:7px;color:#0878f9;font-weight:900">${money(p?.price||0)} <span style="color:#66758a;font-weight:500">×${i.qty}</span></div></div></div>`}).join("")}
+    <div class="payment-detail-row"><span>Shipping fee</span><strong>${money(shipping)} ${shipping===10?"· Within Baybay":""}</strong></div>
+    <div class="payment-detail-row"><span>Expected delivery</span><strong>${expectedDateRange()}</strong></div>
+   </div>
+   <div class="checkout-section">
+    <div class="platform-voucher-title"><span>Platform Vouchers</span><span class="platform-voucher-badge">Free Shipping Discount ›</span></div>
+    <div class="vip-voucher-banner"><span>VIP</span><span>FREE<br>SHIPPING</span><span>20% OFF</span><span>0% INTEREST</span><span>JOIN NOW ›</span></div>
+    <div class="field" style="margin-top:12px"><label>Shop Voucher</label><select id="voucher" class="select" onchange="window.checkoutVoucher=Number(this.value);openCheckout()"><option value="0" ${voucherDiscount===0?"selected":""}>Select voucher</option><option value="50" ${voucherDiscount===50?"selected":""}>₱50 Off</option><option value="100" ${voucherDiscount===100?"selected":""}>₱100 Off</option></select></div>
+    <div class="field"><label>Redeem Code</label><input id="redeem" value="${escapeAttr(window.checkoutRedeem||"")}" placeholder="Enter redeem code" oninput="window.checkoutRedeem=this.value"></div>
+   </div>
+   <div class="checkout-section">
+    <div class="payment-title"><span>Payment Methods</span><span style="font-size:12px;color:#768397">View All ›</span></div>
+    ${renderCheckoutPaymentMethods(selected)}
+   </div>
+   <div class="checkout-total-card">
+    <div class="checkout-total-row"><span>Merchandise Subtotal</span><span>${money(subtotal)}</span></div>
+    <div class="checkout-total-row"><span>Shipping Subtotal</span><span>${money(shipping)}</span></div>
+    <div class="checkout-total-row"><span>Discount</span><span style="color:#0878f9">-${money(discount)}</span></div>
+    <div class="checkout-total-row total"><span>Total Payment</span><strong>${money(total)}</strong></div>
+   </div>
+   <div class="checkout-footer-v3"><div class="checkout-footer-total"><small>Total</small><strong>${money(total)}</strong></div><button class="place-order-v3" onclick="submitCheckoutOrder()">Place Order</button></div>
+  </div>`;
+ checkoutModal.classList.remove("hidden");
+}
+function selectPaymentMethod(id){
+ window.checkoutPaymentMethod=id;
+ if(id==="franzpay"||id==="franzpaylater"){
+   document.getElementById("unsupportedPaymentModal").classList.remove("hidden");startBubbles("unsupportedPaymentBubbles");
+   return;
+ }
+ if(id==="gcash"){
+   openGcashPayment();return;
+ }
+ openCheckout();
+}
+function openGcashPayment(){
+ const c=window.currentCheckout;if(!c)return;
+ gcashContent.innerHTML=`<div class="gcash-title">𝐒𝐄𝐍𝐃 𝐘𝐎𝐔𝐑 𝐏𝐀𝐘𝐌𝐄𝐍𝐓 𝐇𝐄𝐑𝐄!</div><div class="gcash-number">09533749970 &nbsp; 𝐄.... 𝐔.</div>
+  <div class="gcash-field"><label>𝐒𝐄𝐍𝐃𝐄𝐑 𝐍𝐔𝐌𝐁𝐄𝐑:</label><input id="gcashSender" type="tel" inputmode="tel" placeholder="09XXXXXXXXX"></div>
+  <div class="gcash-field"><label>𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍 𝐍𝐔𝐌𝐁𝐄𝐑:</label><input id="gcashTransaction" type="text" placeholder="Enter transaction number"></div>
+  <div class="gcash-field"><label>𝐀𝐌𝐎𝐔𝐍𝐓:</label><input id="gcashAmount" type="number" inputmode="decimal" step="0.01" value="${c.total.toFixed(2)}" placeholder="Amount sent"></div>
+  <div class="gcash-field"><label>𝐔𝐏𝐋𝐎𝐀𝐃 𝐈𝐌𝐀𝐆𝐄:</label><input id="gcashReceipt" class="gcash-file" type="file" accept="image/*" onchange="previewGcashReceipt(event)"><img id="gcashReceiptPreview" class="gcash-receipt-preview hidden" alt="Receipt preview"></div>
+  <button class="franz-theme-btn" onclick="continueGcashPayment()">𝐂𝐎𝐍𝐓𝐈𝐍𝐔𝐄</button>`;
+ document.getElementById("gcashModal").classList.remove("hidden");startBubbles("gcashBubbles");
+}
+function previewGcashReceipt(e){
+ const f=e.target.files&&e.target.files[0],img=document.getElementById("gcashReceiptPreview");if(!f||!img)return;
+ const r=new FileReader();r.onload=()=>{img.src=r.result;img.classList.remove("hidden")};r.readAsDataURL(f);
+}
+function continueGcashPayment(){
+ const sender=(document.getElementById("gcashSender")?.value||"").replace(/\s|-/g,"");
+ const txn=(document.getElementById("gcashTransaction")?.value||"").trim();
+ const amount=Number(document.getElementById("gcashAmount")?.value||0);
+ const file=document.getElementById("gcashReceipt")?.files?.[0];
+ if(!/^09\d{9}$/.test(sender)){alert("Please enter a valid GCash sender number.");return;}
+ if(!txn){alert("Please enter the transaction number.");return;}
+ if(amount<Number(window.currentCheckout?.total||0)){alert("The payment amount must cover the total payment.");return;}
+ if(!file){alert("Please upload your payment receipt.");return;}
+ const reader=new FileReader();reader.onload=()=>{
+   const img=new Image();
+   img.onload=()=>{
+     const max=900,scale=Math.min(1,max/Math.max(img.width,img.height));
+     const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
+     const ctx=canvas.getContext("2d");ctx.drawImage(img,0,0,canvas.width,canvas.height);
+     const compact=canvas.toDataURL("image/jpeg",.68);
+     window.pendingGcash={sender,transaction:txn,amount,receipt:compact};
+     closeModal("gcashModal");createOrder("GCash",window.pendingGcash);
+   };
+   img.onerror=()=>{alert("The receipt image could not be read. Please choose another image.");};
+   img.src=reader.result;
+ };reader.readAsDataURL(file);
+}
+function submitCheckoutOrder(){
+ const method=window.checkoutPaymentMethod||"cod";
+ if(method==="gcash"){openGcashPayment();return;}
+ if(method!=="cod"){selectPaymentMethod(method);return;}
+ createOrder("COD",null);
+}
+function createOrder(method,payment){
+ const c=window.currentCheckout;
+ if(!c||!c.items?.length){alert("Your cart is empty.");return;}
+ const items=c.items.map(i=>({id:i.id,qty:i.qty,size:i.size||"",color:i.color||""}));
+ const order={
+   id:Date.now(),total:c.total,status:"To Pay",date:new Date().toLocaleString(),items,address:checkoutAddress?JSON.parse(JSON.stringify(checkoutAddress)):null,
+   shippingFee:c.shipping,expectedDate:expectedDateRange(),paymentMethod:method,paymentStatus:"Pending Approval",payment:payment?{sender:payment.sender,transaction:payment.transaction,amount:payment.amount,receipt:payment.receipt}:null,
+   createdAt:new Date().toISOString()
+ };
+ orders.push(order);
+ notifications.unshift({title:method==="GCash"?"GCash Payment Submitted":"COD Order Submitted",text:method==="GCash"?"Your payment is waiting for admin approval.":"Your COD order is waiting for admin approval.",time:new Date().toLocaleString()});
+ if(!checkoutItem)cart=[];else{
+   const key=checkoutItem.id+"|"+checkoutItem.size+"|"+checkoutItem.color;let citem=cart.find(x=>x.key===key);
+   if(citem){citem.qty-=checkoutItem.qty;if(citem.qty<=0)cart=cart.filter(x=>x!==citem)}
+ }
+ save();
+ window.lastPlacedOrderId=order.id;
+ checkoutAddress=null;checkoutItem=null;window.currentCheckout=null;window.checkoutPaymentMethod="cod";window.checkoutVoucher=0;window.checkoutRedeem="";window.pendingGcash=null;
+ closeModal("checkoutModal");renderCart();renderMe();renderMyOrders();
+ if(method==="GCash"){
+   paymentWaitingMessage.textContent="Order #"+String(order.id).slice(-6)+" is saved. Your payment proof is waiting for admin approval.";
+   document.getElementById("paymentWaitingModal").classList.remove("hidden");startBubbles("paymentWaitingBubbles");
+ }else{
+   document.getElementById("codWaitingModal").classList.remove("hidden");startBubbles("codWaitingBubbles");
+ }
+}
+function finishPaymentWaiting(){closeModal("paymentWaitingModal");renderAll()}
+function finishCodWaiting(){closeModal("codWaitingModal");renderAll()}
+
+const avatarChoices=[
+ "https://i.pravatar.cc/150?img=12","https://i.pravatar.cc/150?img=32","https://i.pravatar.cc/150?img=47",
+ "https://i.pravatar.cc/150?img=5","https://i.pravatar.cc/150?img=15","https://i.pravatar.cc/150?img=49"
+];
+function renderMe(){
+ let u=user();if(!u)return;
+ profileName.textContent=u.username;
+ profileAvatar.src=u.avatar||avatarChoices[0];
+ avatarPicker.innerHTML=avatarChoices.map(a=>`<img class="avatar-choice ${(u.avatar||avatarChoices[0])===a?"selected":""}" src="${a}" onclick="pickAvatar('${a}')">`).join("");
+ let pay=orders.filter(o=>o.status==="To Pay").length,
+     ship=orders.filter(o=>o.status==="To Ship").length,
+     rec=orders.filter(o=>o.status==="To Receive").length,
+     review=orders.filter(o=>o.status==="To Rate" && !o.ratingSubmitted).length,
+     rate=orders.filter(o=>o.status==="To Rate" && !o.ratingSubmitted).length;
+ payCount.textContent=pay;
+ if(document.getElementById("shipCount"))shipCount.textContent=ship;
+ receiveCount.textContent=rec;
+ if(document.getElementById("reviewCount"))reviewCount.textContent=review;
+ rateCount.textContent=rate;
+ let cartQty=cart.reduce((s,i)=>s+Number(i.qty||0),0);
+ if(document.getElementById("meCartBadge"))meCartBadge.textContent=cartQty;
+ if(document.getElementById("meMessageBadge"))meMessageBadge.textContent=0;
+}
+function syncApprovedOrders(){
+  let changed=false;
+  orders.forEach(o=>{
+    if(o.paymentStatus==="Approved" && o.status==="To Pay"){
+      o.status="To Ship";o.approvedAt=o.approvedAt||new Date().toLocaleString();changed=true;
+      notifications.unshift({title:"Payment Approved",text:"Your order is now To Ship.",time:new Date().toLocaleString()});
+    }
+  });
+  if(changed)save();
+  return changed;
+}
+function orderProductItems(o){
+ return (o.items||[]).map(i=>({item:i,p:products.find(x=>String(x.id)===String(i.id))})).filter(x=>x.p);
+}
+function orderStatusMatches(o,status){
+ if(status==="To Review"||status==="To Rate")return o.status==="To Rate"&&!o.ratingSubmitted;
+ return o.status===status;
+}
+function openOrderStatus(status){
+ syncApprovedOrders();
+ const titleMap={"To Pay":"To Pay","To Ship":"To Ship","To Receive":"To Receive","To Review":"To Review","To Rate":"To Rate"};
+ const list=orders.slice().reverse().filter(o=>orderStatusMatches(o,status));
+ document.getElementById("orderStatusTitle").textContent=titleMap[status]||"My Orders";
+ const el=document.getElementById("orderStatusContent");
+ if(!list.length){el.innerHTML='<div class="empty">No orders in '+escapeHtml(status||"this section")+'.</div>';document.getElementById("orderStatusModal").classList.remove("hidden");return;}
+ el.innerHTML='<div class="order-filter-note">Tap an order to view its product image, AI description, quantity, subtotal, total, address and expected delivery date.</div>'+list.map(o=>{
+   const first=orderProductItems(o)[0];
+   const p=first?.p;
+   const qty=(o.items||[]).reduce((sum,i)=>sum+Number(i.qty||0),0);
+   return `<div class="order-open-card" onclick="openOrderDetails(${o.id})">
+    <div class="order-open-top"><img src="${escapeAttr(p?.img||"")}" alt="Product"><div class="order-open-info"><b>${escapeHtml(p?.name||"Order")}</b><small>Order #${String(o.id).slice(-6)} · Qty ${qty}</small><span class="order-status-pill">${escapeHtml(o.status)}</span></div><b style="color:#0878f9">${money(o.total||0)}</b></div>
+   </div>`;
+ }).join('');
+ document.getElementById("orderStatusModal").classList.remove("hidden");
+}
+function openOrderDetails(id){
+ const o=orders.find(x=>String(x.id)===String(id));if(!o)return;
+ const rows=orderProductItems(o);
+ const subtotal=Number(o.merchandiseSubtotal??o.subtotal??rows.reduce((s,x)=>s+Number(x.p.price||0)*Number(x.item.qty||0),0));
+ const shipping=Number(o.shippingFee||0);
+ const discount=Math.max(0,subtotal+shipping-Number(o.total||0));
+ const address=o.address||getSavedAddress();
+ const itemHtml=rows.map(({item,p})=>`<div class="order-detail-item"><img src="${escapeAttr(p.img||"")}" alt="${escapeAttr(p.name||"Product")}"><div class="order-detail-item-main"><h4>${escapeHtml(p.name||"Product")}</h4><div class="order-detail-desc">${escapeHtml(productDescription(p))}</div><div class="order-detail-meta">Qty: <b>${Number(item.qty||0)}</b>${item.size?` · Size: ${escapeHtml(item.size)}`:""}${item.color?` · Color: ${escapeHtml(item.color)}`:""}</div><div class="order-detail-price">${money(Number(p.price||0)*Number(item.qty||0))}</div></div></div>`).join('');
+ const action=(o.status==="To Ship")?`<button class="order-action" onclick="event.stopPropagation();markShippedToReceive(${o.id});closeModal('orderDetailModal')">Mark as To Receive</button>`:(o.status==="To Receive")?`<button class="received-btn" onclick="event.stopPropagation();markReceived(${o.id});closeModal('orderDetailModal')">✓ I Received My Order</button>`:(o.status==="To Rate")?`<button class="review-btn" onclick="event.stopPropagation();closeModal('orderDetailModal');openReview(${o.id})">☆ Rate Order</button>`:"";
+ document.getElementById("orderDetailContent").innerHTML=`
+  ${address?`<div class="order-detail-address"><b>📍 Delivery Address</b><div>${escapeHtml(address.name||"")} ${address.number?`(${escapeHtml(address.number)})`:""}</div><div>${escapeHtml(addressFullText(address))}</div><div>${escapeHtml(addressText(address))}</div></div>`:""}
+  ${itemHtml||'<div class="empty">No product information found.</div>'}
+  <div class="order-detail-summary">
+   <div class="order-detail-row"><span>Merchandise Subtotal</span><strong>${money(subtotal)}</strong></div>
+   <div class="order-detail-row"><span>Shipping Fee</span><strong>${money(shipping)}</strong></div>
+   ${discount>0?`<div class="order-detail-row"><span>Discount</span><strong style="color:#0878f9">-${money(discount)}</strong></div>`:""}
+   <div class="order-detail-row"><span>Expected Date</span><strong>${escapeHtml(o.expectedDate||expectedDateRange())}</strong></div>
+   <div class="order-detail-row"><span>Status</span><strong style="color:#0878f9">${escapeHtml(o.status)}</strong></div>
+   <div class="order-detail-row total"><span>Total</span><strong>${money(o.total||0)}</strong></div>
+  </div>
+  ${action?`<div class="order-status-action-row">${action}</div>`:""}`;
+ closeModal("orderStatusModal");
+ document.getElementById("orderDetailModal").classList.remove("hidden");
+}
+function renderMyOrders(){
+ const el=document.getElementById("myOrders"); if(!el)return;
+ syncApprovedOrders();
+ if(!orders.length){el.innerHTML='<div class="empty">No orders yet.</div>';return;}
+ el.innerHTML=orders.slice().reverse().map(o=>{
+   const items=o.items||[];
+   const names=items.map(i=>{const p=products.find(x=>String(x.id)===String(i.id));return p?`${escapeHtml(p.name)} × ${i.qty}`:'Product';}).join(', ');
+   let action='';
+   if(o.status==='To Pay'){
+     const wait=o.paymentStatus==='Pending Approval'?(o.paymentMethod==='GCash'?'Waiting for GCash payment approval.':'Waiting for COD admin approval.'):'Awaiting payment.';
+     action=`<div class="order-muted">${escapeHtml(wait)}</div>`;
+   }
+   if(o.status==='To Ship') action=`<div class="order-muted">Your order has been approved and is being prepared for shipping.</div><button class="order-action" onclick="event.stopPropagation();markShippedToReceive(${o.id})">Mark as To Receive</button>`;
+   if(o.status==='To Receive') action=`<button class="received-btn" onclick="event.stopPropagation();markReceived(${o.id})">✓ I Received My Order</button>`;
+   if(o.status==='To Rate') action=`<button class="review-btn" onclick="event.stopPropagation();openReview(${o.id})">☆ Rate Order</button>`;
+   const addr=o.address?`<div class="order-address-mini">📍 ${escapeHtml(addressText(o.address))}<br>Expected: ${escapeHtml(o.expectedDate||expectedDateRange())}</div>`:'';
+   return `<div class="card" style="background:#f8fbff;margin-top:9px;cursor:pointer" onclick="openOrderDetails(${o.id})"><b>Order #${String(o.id).slice(-6)}</b><div style="font-size:12px;color:#66758a;margin-top:5px">${names||'Order'}</div><span class="order-status-pill">${escapeHtml(o.status)}</span>${addr}<div style="display:flex;justify-content:flex-end;margin-top:7px"><b style="color:#0878f9">${money(o.total)}</b></div>${o.ratingSubmitted?' <div class="rating-row"><span class="star">★</span> Rated</div>':''}${action}</div>`;
+ }).join('');
+}
+function markShippedToReceive(id){const o=orders.find(x=>String(x.id)===String(id));if(!o||o.status!=="To Ship")return;o.status="To Receive";o.shippedAt=new Date().toLocaleString();notifications.unshift({title:"Order Shipped",text:"Your order is now on the way.",time:new Date().toLocaleString()});save();renderMe();renderMyOrders();}
+function markReceived(id){const o=orders.find(x=>String(x.id)===String(id));if(!o)return;o.status='To Rate';o.receivedAt=new Date().toLocaleString();notifications.unshift({title:'Order Received',text:'Your order is ready to be rated.',time:new Date().toLocaleString()});save();renderMe();renderMyOrders();alert('Order marked as received. You can now rate it!');}
+function openReview(id){const o=orders.find(x=>String(x.id)===String(id));if(!o||o.status!=='To Rate')return;reviewContent.innerHTML=`<p style="font-size:13px;color:#66758a">Your rating will be added automatically to the product rating after you submit.</p><div class="field"><label>Choose product</label><select id="reviewProduct" class="select">${(o.items||[]).map(i=>{const p=products.find(x=>String(x.id)===String(i.id));return p?`<option value="${p.id}">${p.name}</option>`:''}).join('')}</select></div><div class="field"><label>Your rating</label><div class="stars" id="stars">${[1,2,3,4,5].map(n=>`<button type="button" class="star-btn" onclick="chooseRating(${n})" id="star${n}">★</button>`).join('')}</div></div><div class="field"><label>Review (optional)</label><textarea id="reviewText" placeholder="Tell us about your order"></textarea></div><button class="review-btn" onclick="submitReview(${o.id})">Submit Rating</button>`;reviewModal.classList.remove('hidden');window.currentRating=0;}
+function chooseRating(n){window.currentRating=n;for(let i=1;i<=5;i++){const b=document.getElementById('star'+i);if(b)b.classList.toggle('active',i<=n);}}
+function submitReview(orderId){const o=orders.find(x=>String(x.id)===String(orderId));const pid=document.getElementById('reviewProduct').value;if(!o||!pid||!window.currentRating){alert('Please choose a rating from 1 to 5 stars.');return;}const key=String(pid),old=ratingFor(pid);const total=old.avg*old.count+window.currentRating;productRatings[key]={avg:total/(old.count+1),count:old.count+1};saveRatings();o.ratingSubmitted=true;o.status='Completed';o.review=document.getElementById('reviewText').value.trim();o.reviewProduct=pid;o.rating=window.currentRating;save();closeModal('reviewModal');renderAll();renderMyOrders();alert('Thank you! Your rating was added automatically to the product.');}
+
+function pickAvatar(a){let u=user();u.avatar=a;localStorage.setItem("franz_user",JSON.stringify(u));renderMe()}
+function renderNotifications(){
+ if(!notifications.length){notificationsEl.innerHTML='<div class="empty">No notifications yet.</div>';return}
+ notificationsEl.innerHTML=notifications.map(n=>`<div class="notice"><b>${n.title}</b><span>${n.text}</span><br><small style="color:#98a2b2">${n.time}</small></div>`).join("")
+}
+function renderAll(){renderProducts();renderCart();renderMe();renderNotifications();renderMyOrders()}
+function closeModal(id){
+ const el=document.getElementById(id);if(el)el.classList.add("hidden");
+ if(id==="buyAddressModal")stopBubbles("buyAddressBubbles");
+ if(id==="addressFormModal")stopBubbles("addressFormBubbles");
+ if(id==="locationPickerModal")stopBubbles("locationPickerBubbles");
+ if(id==="franzAlertModal")stopBubbles("franzAlertBubbles");
+ if(id==="addressSuccessModal")stopBubbles("addressSuccessBubbles");
+ if(id==="unsupportedPaymentModal")stopBubbles("unsupportedPaymentBubbles");
+ if(id==="gcashModal")stopBubbles("gcashBubbles");
+ if(id==="paymentWaitingModal")stopBubbles("paymentWaitingBubbles");
+ if(id==="codWaitingModal")stopBubbles("codWaitingBubbles");
+}
+let franzLoadingBusy=false;
+function showFranzLoading(){
+ const overlay=document.getElementById("franzLoadingOverlay");
+ if(!overlay)return;
+ overlay.classList.remove("hidden");
+ overlay.setAttribute("aria-hidden","false");
+ startBubbles("franzLoadingBubbles");
+}
+function hideFranzLoading(){
+ const overlay=document.getElementById("franzLoadingOverlay");
+ if(!overlay)return;
+ overlay.classList.add("hidden");
+ overlay.setAttribute("aria-hidden","true");
+ stopBubbles("franzLoadingBubbles");
+}
+function runWithFranzLoading(target){
+ if(franzLoadingBusy)return;
+ franzLoadingBusy=true;
+ showFranzLoading();
+ setTimeout(()=>{
+   window.__franzLoadingReplay=target;
+   franzLoadingBusy=false;
+   hideFranzLoading();
+   try{target.click();}catch(e){}
+ },1000);
+}
+document.addEventListener("click",function(e){
+ const target=e.target?.closest?.("button,[role='button']");
+ if(!target)return;
+ if(window.__franzLoadingReplay===target){window.__franzLoadingReplay=null;return;}
+ if(target.disabled || target.dataset.noLoading==="true")return;
+ if(document.getElementById("franzLoadingOverlay")?.contains(target))return;
+ if(franzLoadingBusy){e.preventDefault();e.stopImmediatePropagation();return;}
+ e.preventDefault();
+ e.stopImmediatePropagation();
+ runWithFranzLoading(target);
+},true);
+
+const nativeFranzAlert=window.alert;
+window.alert=function(message){
+  const modal=document.getElementById("franzAlertModal");
+  if(!modal){nativeFranzAlert(message);return;}
+  document.getElementById("franzAlertTitle").textContent="This page says";
+  document.getElementById("franzAlertMessage").textContent=String(message||"");
+  modal.classList.remove("hidden");startBubbles("franzAlertBubbles");
+};
+setInterval(()=>{if(syncApprovedOrders())renderAll();},1200);
+
+document.getElementById("orderStatusModal").addEventListener("click",e=>{if(e.target.id==="orderStatusModal")closeModal("orderStatusModal")});
+document.getElementById("orderDetailModal").addEventListener("click",e=>{if(e.target.id==="orderDetailModal")closeModal("orderDetailModal")});
+document.getElementById("productModal").addEventListener("click",e=>{if(e.target.id==="productModal")closeModal("productModal")});
+document.getElementById("checkoutModal").addEventListener("click",e=>{if(e.target.id==="checkoutModal")closeModal("checkoutModal")});
+document.getElementById("reviewModal").addEventListener("click",e=>{if(e.target.id==="reviewModal")closeModal("reviewModal")});
+document.getElementById("buyAddressModal").addEventListener("click",e=>{if(e.target.id==="buyAddressModal")closeModal("buyAddressModal")});
+document.getElementById("addressFormModal").addEventListener("click",e=>{if(e.target.id==="addressFormModal")closeModal("addressFormModal")});
+document.getElementById("locationPickerModal").addEventListener("click",e=>{if(e.target.id==="locationPickerModal")closeModal("locationPickerModal")});
+document.getElementById("franzAlertModal").addEventListener("click",e=>{if(e.target.id==="franzAlertModal")closeModal("franzAlertModal")});
+document.getElementById("addressSuccessModal").addEventListener("click",e=>{if(e.target.id==="addressSuccessModal")closeModal("addressSuccessModal")});
+document.getElementById("unsupportedPaymentModal").addEventListener("click",e=>{if(e.target.id==="unsupportedPaymentModal")closeModal("unsupportedPaymentModal")});
+document.getElementById("gcashModal").addEventListener("click",e=>{if(e.target.id==="gcashModal")closeModal("gcashModal")});
+document.getElementById("paymentWaitingModal").addEventListener("click",e=>{if(e.target.id==="paymentWaitingModal")closeModal("paymentWaitingModal")});
+document.getElementById("codWaitingModal").addEventListener("click",e=>{if(e.target.id==="codWaitingModal")closeModal("codWaitingModal")});
+if(user()){
+  auth.classList.add("hidden");
+  welcome.classList.add("hidden");
+  app.classList.remove("hidden");
+  renderAll();
+}
+</script>
+<script>
+/* Start fresh login screen unless a user is already logged in. */
+const productsEl=document.getElementById("products");
+</script>
+
+<script>
+// FranzOnlineShop PWA
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>

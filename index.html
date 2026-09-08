@@ -1645,7 +1645,7 @@ async function franzAiSendMessage(text){
   franzAiAddMessage("user",text.trim()); franzAiInput.value="";
   const typing=franzAiAddMessage("ai","FranzShop AI is thinking…","franz-ai-typing");
   try{
-    if(FRANZ_AI_ENDPOINT.includes("YOUR-VERCEL-PROJECT")) throw new Error("AI endpoint is not configured yet.");
+   
     const res=await fetch(FRANZ_AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:franzAiState.messages.slice(-12)})});
     const data=await res.json().catch(()=>({}));
     if(!res.ok) throw new Error(data.error||"AI request failed.");

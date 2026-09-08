@@ -422,6 +422,37 @@ button,input,select,textarea{touch-action:manipulation}
 @media(max-width:480px){.vip-voucher-banner{grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:3px}.vip-voucher-banner span{font-size:7px;padding:5px 2px}.vip-voucher-banner span:first-child{font-size:14px}.checkout-footer-v3{padding-bottom:12px}.checkout-footer-total strong{font-size:18px}}
 </style>
 
+
+<style id="franzAiStyles">
+#franzAiLauncher{position:fixed;right:16px;bottom:92px;z-index:1160;display:flex;align-items:center;gap:10px;max-width:min(360px,calc(100vw - 28px));cursor:pointer;filter:drop-shadow(0 12px 24px rgba(40,80,160,.22))}
+#franzAiHint{background:linear-gradient(110deg,#a9d8ff,#fff,#ffd0e2);background-size:250% 250%;animation:franzAiGradient 5s ease infinite;border-radius:28px;padding:14px 18px;font-weight:800;color:#172033;text-align:center;line-height:1.2;border:1px solid rgba(255,255,255,.85);box-shadow:0 8px 28px rgba(60,90,160,.16);font-size:15px}
+#franzAiAvatar{width:78px;height:78px;border-radius:50%;object-fit:cover;object-position:center;background:#9fc9f5;border:3px solid rgba(255,255,255,.92);box-shadow:0 8px 28px rgba(60,90,160,.25);animation:franzAiFloat 2.8s ease-in-out infinite}
+#franzAiModal{position:fixed;inset:0;z-index:1170;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(20,32,60,.28);backdrop-filter:blur(5px)}
+#franzAiModal.hidden{display:none!important}
+.franz-ai-card{position:relative;width:min(620px,96vw);height:min(760px,90vh);display:flex;flex-direction:column;overflow:hidden;border-radius:30px;border:1.5px solid rgba(255,255,255,.8);box-shadow:0 28px 90px rgba(30,60,120,.34);background:linear-gradient(135deg,#9bd2ff 0%,#fff 22%,#ffd0df 47%,#b9dcff 70%,#fff 84%,#ffd5e4 100%);background-size:350% 350%;animation:franzAiGradient 8s ease infinite}
+.franz-ai-bubbles{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.franz-ai-bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.98) 0 10%,rgba(255,255,255,.52) 16%,rgba(255,255,255,.16) 42%,rgba(100,180,255,.12) 62%,rgba(255,180,210,.2) 100%);border:1px solid rgba(255,255,255,.7);box-shadow:inset -5px -7px 13px rgba(80,140,220,.12),inset 5px 4px 9px rgba(255,255,255,.85),0 5px 18px rgba(70,120,180,.1);animation:franzAiBubblePop var(--dur) ease-out forwards}
+.franz-ai-top,.franz-ai-messages,.franz-ai-inputbar{position:relative;z-index:2}
+.franz-ai-top{padding:22px 54px 18px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.16)}
+.franz-ai-title{font-weight:950;font-size:clamp(19px,5vw,27px);letter-spacing:.8px;color:#fff;text-shadow:0 2px 8px rgba(45,85,145,.28)}
+.franz-ai-subtitle{margin-top:5px;font-size:12px;font-weight:700;color:rgba(35,55,85,.68)}
+#franzAiClose{position:absolute;right:12px;top:10px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.58);color:#29354d;font-size:27px;font-weight:700;border:1px solid rgba(255,255,255,.8)}
+.franz-ai-messages{flex:1;overflow:auto;padding:18px 15px 14px;display:flex;flex-direction:column;gap:10px}
+.franz-ai-msg{max-width:86%;padding:11px 14px;border-radius:18px;line-height:1.42;font-size:14px;white-space:pre-wrap;word-break:break-word;box-shadow:0 5px 15px rgba(70,100,150,.08)}
+.franz-ai-msg.ai{align-self:flex-start;background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.75);color:#1b2940;border-bottom-left-radius:6px}
+.franz-ai-msg.user{align-self:flex-end;background:linear-gradient(120deg,#9ed6ff,#ffd0e4);border:1px solid rgba(255,255,255,.7);color:#172033;border-bottom-right-radius:6px}
+.franz-ai-typing{opacity:.72;font-style:italic}
+.franz-ai-inputbar{padding:12px 12px 14px;display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.2);border-top:1px solid rgba(255,255,255,.52)}
+#franzAiInput{flex:1;min-width:0;border:0;outline:0;border-radius:999px;background:#151515;color:#fff;padding:15px 17px;font-size:15px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+#franzAiInput::placeholder{color:#aeb2bb}
+#franzAiSend{flex:0 0 auto;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#9bd5ff,#fff,#ffc9de);color:#202b42;font-size:22px;font-weight:900;border:1px solid rgba(255,255,255,.9);box-shadow:0 6px 18px rgba(60,90,150,.2)}
+#franzAiSend:disabled{opacity:.55}
+@keyframes franzAiGradient{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes franzAiFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+@keyframes franzAiBubblePop{0%{transform:translateY(25px) scale(.2);opacity:0}12%{opacity:.78}70%{opacity:.38}100%{transform:translateY(-120px) scale(1.18);opacity:0}}
+@media(max-width:520px){#franzAiLauncher{right:10px;bottom:76px;gap:7px}#franzAiHint{font-size:12px;padding:11px 13px;max-width:230px}#franzAiAvatar{width:65px;height:65px}.franz-ai-card{width:100%;height:92vh;border-radius:25px}.franz-ai-msg{max-width:91%}}
+</style>
+
 </head>
 <body>
 
@@ -1545,5 +1576,94 @@ if("serviceWorker" in navigator){
   if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true) hide();
 })();
 </script>
+
+<div id="franzAiLauncher" role="button" tabindex="0" aria-label="Open FranzShop AI Assistant" data-no-loading="true">
+  <div id="franzAiHint">Click me if you need help, I'm<br><b>FranzShop AI Assistant.</b></div>
+  <img id="franzAiAvatar" src="assets/bubbles.jpg" alt="FranzShop AI Assistant">
+</div>
+
+<div id="franzAiModal" class="hidden" aria-hidden="true">
+  <div class="franz-ai-card" role="dialog" aria-modal="true" aria-labelledby="franzAiTitle">
+    <div id="franzAiBubbleLayer" class="franz-ai-bubbles"></div>
+    <div class="franz-ai-top">
+      <button id="franzAiClose" type="button" data-no-loading="true" aria-label="Close">×</button>
+      <div id="franzAiTitle" class="franz-ai-title">𝐅𝐑𝐀𝐍𝐙𝐒𝐇𝐎𝐏 𝐀𝐈 𝐀𝐒𝐒𝐈𝐒𝐓𝐀𝐍𝐓</div>
+      <div class="franz-ai-subtitle">Ask anything — Bisaya, Tagalog, or English.</div>
+    </div>
+    <div id="franzAiMessages" class="franz-ai-messages"></div>
+    <form id="franzAiForm" class="franz-ai-inputbar">
+      <input id="franzAiInput" autocomplete="off" maxlength="1200" placeholder="Ask me anything...">
+      <button id="franzAiSend" type="submit" data-no-loading="true" aria-label="Send">➤</button>
+    </form>
+  </div>
+</div>
+
+
+<script id="franzAiScript">
+const FRANZ_AI_ENDPOINT = "https://franzshopreal-fjygg6q15-franz-shop.vercel.app/api/chat";
+const franzAiState = { messages: [], bubbleTimer: null, busy: false };
+const franzAiModal = document.getElementById("franzAiModal");
+const franzAiMessages = document.getElementById("franzAiMessages");
+const franzAiInput = document.getElementById("franzAiInput");
+const franzAiSend = document.getElementById("franzAiSend");
+
+function franzAiAddMessage(role, text, extraClass="") {
+  const el = document.createElement("div");
+  el.className = `franz-ai-msg ${role} ${extraClass}`;
+  el.textContent = text;
+  franzAiMessages.appendChild(el);
+  franzAiMessages.scrollTop = franzAiMessages.scrollHeight;
+  return el;
+}
+function franzAiStartBubbles(){
+  const layer = document.getElementById("franzAiBubbleLayer");
+  if(franzAiState.bubbleTimer) return;
+  const spawn = ()=>{
+    for(let i=0;i<2;i++){
+      const b=document.createElement("span"); b.className="franz-ai-bubble";
+      const size=8+Math.random()*25;
+      b.style.width=size+"px"; b.style.height=size+"px";
+      b.style.left=(3+Math.random()*94)+"%"; b.style.bottom=(-size-5)+"px";
+      b.style.setProperty("--dur",(2.7+Math.random()*2.7)+"s");
+      layer.appendChild(b); setTimeout(()=>b.remove(),6000);
+    }
+  };
+  spawn(); franzAiState.bubbleTimer=setInterval(spawn,520);
+}
+function franzAiStopBubbles(){ if(franzAiState.bubbleTimer){clearInterval(franzAiState.bubbleTimer);franzAiState.bubbleTimer=null;} }
+function franzAiOpen(){
+  franzAiModal.classList.remove("hidden"); franzAiModal.setAttribute("aria-hidden","false");
+  franzAiStartBubbles();
+  if(!franzAiState.messages.length) franzAiAddMessage("ai","Hi! I'm FranzShop AI Assistant. 😊\nUnsay imong pangutana?");
+  setTimeout(()=>franzAiInput.focus(),100);
+}
+function franzAiClose(){ franzAiModal.classList.add("hidden"); franzAiModal.setAttribute("aria-hidden","true"); franzAiStopBubbles(); }
+async function franzAiSendMessage(text){
+  if(franzAiState.busy || !text.trim()) return;
+  franzAiState.busy=true; franzAiSend.disabled=true;
+  franzAiState.messages.push({role:"user",content:text.trim()});
+  franzAiAddMessage("user",text.trim()); franzAiInput.value="";
+  const typing=franzAiAddMessage("ai","FranzShop AI is thinking…","franz-ai-typing");
+  try{
+    if(FRANZ_AI_ENDPOINT.includes("YOUR-VERCEL-PROJECT")) throw new Error("AI endpoint is not configured yet.");
+    const res=await fetch(FRANZ_AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:franzAiState.messages.slice(-12)})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error||"AI request failed.");
+    typing.remove();
+    const reply=String(data.reply||"Sorry, I couldn't answer that right now.");
+    franzAiState.messages.push({role:"assistant",content:reply});
+    franzAiAddMessage("ai",reply);
+  }catch(err){
+    typing.textContent = err.message.includes("not configured") ? "AI is ready, but the secure backend endpoint still needs to be connected." : "Sorry dzaii, temporary problem sa AI. Please try again.";
+    typing.classList.remove("franz-ai-typing");
+  }finally{ franzAiState.busy=false; franzAiSend.disabled=false; franzAiInput.focus(); }
+}
+document.getElementById("franzAiLauncher").addEventListener("click",franzAiOpen);
+document.getElementById("franzAiLauncher").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();franzAiOpen();}});
+document.getElementById("franzAiClose").addEventListener("click",franzAiClose);
+franzAiModal.addEventListener("click",e=>{if(e.target===franzAiModal)franzAiClose();});
+document.getElementById("franzAiForm").addEventListener("submit",e=>{e.preventDefault();franzAiSendMessage(franzAiInput.value);});
+</script>
+
 </body>
 </html>
